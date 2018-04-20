@@ -6,7 +6,7 @@
 /*   By: jubarbie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/20 08:18:56 by jubarbie          #+#    #+#             */
-/*   Updated: 2018/04/20 15:39:37 by jubarbie         ###   ########.fr       */
+/*   Updated: 2018/04/20 17:25:32 by jubarbie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,9 @@
 # define PAGE_SIZE sysconf(_SC_PAGE_SIZE)
 # define TINY_SIZE 40000
 # define SMALL_SIZE 40000
-# define HDB(p) ((head_block *)((char *)p - HDB_SIZE_ALIGN))
+# define HDB(p) ((head_block *)p - 1)
 # define HDB_SIZE(p) HDB(p)->size
 # define HDB_ALLOC(p) HDB(p)->allocated 
-# define HDB_SIZE_ALIGN ALIGN(sizeof(head_block), PAGE_SIZE)
 
 typedef struct {
     size_t  size;
@@ -38,9 +37,12 @@ typedef struct {
 
 extern void    *mem_tiny;
 extern void    *mem_small;
+extern size_t   tiny_size;
+extern size_t   small_size;
 extern char     malloc_init;
 
 void    *ft_malloc(size_t size);
+void    ft_free(void *ptr);
 void    show_alloc_mem();
 
 #endif

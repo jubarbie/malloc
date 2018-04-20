@@ -6,7 +6,7 @@
 /*   By: jubarbie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/20 08:36:03 by jubarbie          #+#    #+#             */
-/*   Updated: 2018/04/20 16:44:57 by jubarbie         ###   ########.fr       */
+/*   Updated: 2018/04/20 17:33:21 by jubarbie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 void    *mem_tiny;
 void    *mem_small;
+size_t  tiny_size;
+size_t  small_size;
 char    malloc_init = 0;
 
 static void     *next_block(void *p)
@@ -23,22 +25,20 @@ static void     *next_block(void *p)
 
 static size_t   get_block_size(size_t size)
 {
-    return (ALIGN(size, PAGE_SIZE) + HDB_SIZE_ALIGN);
+    return (size + sizeof(head_block));
 }
 
 static void    *init_malloc()
 {
-    size_t  size;
-    
-    size = get_block_size(TINY_SIZE);
-    mem_tiny = mmap(NULL, size, PROT_READ | PROT_WRITE, MAP_ANON | MAP_PRIVATE, -1, 0);
+    tiny_size = (ALIGN(get_block_size(TINY_SIZE), PAGE_SIZE));
+    mem_tiny = mmap(NULL, tiny_size, PROT_READ | PROT_WRITE, MAP_ANON | MAP_PRIVATE, -1, 0);
     if (mem_tiny == (void *) -1)
     {
         printf("Could not map tiny mem: %s\n", strerror(errno));
         return NULL;
     }
-    mem_tiny = (char *)mem_tiny + HDB_SIZE_ALIGN;
-    HDB_SIZE(mem_tiny) = size;
+    mem_tiny = (head_block *)mem_tiny + 1;
+    HDB_SIZE(mem_tiny) = tiny_size;
     HDB_ALLOC(mem_tiny) = 0;
 
     malloc_init = 1;
@@ -53,17 +53,19 @@ static void     *malloc_in(void *first, size_t size)
 
     p = first;
     s = get_block_size(size);
-    while ((HDB_ALLOC(p) == 1 || (HDB_ALLOC(p) == 0 && HDB_SIZE(p) < s)) && (char *)p < (char *)first + get_block_size(TINY_SIZE))
+    while ((HDB_ALLOC(p) == 1 || (HDB_ALLOC(p) == 0 && HDB_SIZE(p) < s)) && (char *)p < (char *)first + tiny_size)
     {
         p = next_block(p);
     }
-    if ((char *)p >= (char *)first + get_block_size(TINY_SIZE)) {
+    if ((char *)p >= (char *)first + tiny_size) {
         return NULL;
     }
-    new = (char *)p + s;
-    HDB_SIZE(new) = HDB_SIZE(p) - s;
-    HDB_ALLOC(new) = 0;
-    HDB_SIZE(p) = s;
+    if (HDB_SIZE(p) > s) {
+        new = (char *)p + s;
+        HDB_SIZE(new) = HDB_SIZE(p) - s;
+        HDB_ALLOC(new) = 0;
+        HDB_SIZE(p) = s;
+    }
     HDB_ALLOC(p) = 1;
     return p;
 }
@@ -92,13 +94,21 @@ void            *ft_malloc(size_t size)
     return malloc_in(mem_tiny, size);
 }
 
+void    ft_free(void *ptr)
+{
+    if (ptr != NULL)
+    {
+        HDB_ALLOC(ptr) = 0;
+    }
+}
+
 void    show_alloc_mem()
 {
     void    *p;
 
-    printf("TINY : %p\n", mem_tiny);
+    printf("TINY : %p - %lu bytes\n", mem_tiny, tiny_size);
     p = mem_tiny;
-    while((char *)p < (char *)mem_tiny + get_block_size(TINY_SIZE))
+    while((char *)p < (char *)mem_tiny + tiny_size)
     {
         print_block(p);
         p = next_block(p);
