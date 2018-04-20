@@ -6,7 +6,7 @@
 /*   By: jubarbie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/20 08:36:03 by jubarbie          #+#    #+#             */
-/*   Updated: 2018/04/20 17:33:21 by jubarbie         ###   ########.fr       */
+/*   Updated: 2018/04/20 18:16:14 by jubarbie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,14 +23,19 @@ static void     *next_block(void *p)
     return ((char *)p + HDB_SIZE(p));
 }
 
-static size_t   get_block_size(size_t size)
+static size_t   block_size(size_t size)
 {
     return (size + sizeof(head_block));
 }
 
+static size_t   payload_size(void *p)
+{
+    return (HDB_SIZE(p) - sizeof(head_block));
+}
+
 static void    *init_malloc()
 {
-    tiny_size = (ALIGN(get_block_size(TINY_SIZE), PAGE_SIZE));
+    tiny_size = (ALIGN(block_size(TINY_SIZE), PAGE_SIZE));
     mem_tiny = mmap(NULL, tiny_size, PROT_READ | PROT_WRITE, MAP_ANON | MAP_PRIVATE, -1, 0);
     if (mem_tiny == (void *) -1)
     {
@@ -49,23 +54,25 @@ static void     *malloc_in(void *first, size_t size)
 {
     void    *p;
     void    *new;
-    size_t  s;
+    size_t  blk_sz;
 
     p = first;
-    s = get_block_size(size);
-    while ((HDB_ALLOC(p) == 1 || (HDB_ALLOC(p) == 0 && HDB_SIZE(p) < s)) && (char *)p < (char *)first + tiny_size)
+    blk_sz = block_size(size);
+    while ((HDB_ALLOC(p) == 1 || (HDB_ALLOC(p) == 0 && (blk_sz > payload_size(p)))) && (char *)p + blk_sz < (char *)first + tiny_size)
     {
         p = next_block(p);
     }
-    if ((char *)p >= (char *)first + tiny_size) {
+    if ((char *)p + blk_sz > (char *)first + tiny_size) {
         return NULL;
     }
-    if (HDB_SIZE(p) > s) {
-        new = (char *)p + s;
-        HDB_SIZE(new) = HDB_SIZE(p) - s;
-        HDB_ALLOC(new) = 0;
-        HDB_SIZE(p) = s;
+    if (blk_sz == HDB_SIZE(p)) {
+        HDB_ALLOC(p) = 1;
+        return p;
     }
+    new = (char *)p + blk_sz;
+    HDB_SIZE(new) = HDB_SIZE(p) - blk_sz;
+    HDB_ALLOC(new) = 0;
+    HDB_SIZE(p) = blk_sz;
     HDB_ALLOC(p) = 1;
     return p;
 }
