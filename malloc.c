@@ -6,7 +6,7 @@
 /*   By: jubarbie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/20 08:36:03 by jubarbie          #+#    #+#             */
-/*   Updated: 2018/04/20 18:16:14 by jubarbie         ###   ########.fr       */
+/*   Updated: 2018/04/23 10:13:52 by jubarbie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,7 @@ void    show_alloc_mem()
 {
     void    *p;
 
-    printf("TINY : %p - %lu bytes\n", mem_tiny, tiny_size);
+    printf("------- Memory viewer -------\nTINY : %p - %lu bytes\n", mem_tiny, tiny_size);
     p = mem_tiny;
     while((char *)p < (char *)mem_tiny + tiny_size)
     {

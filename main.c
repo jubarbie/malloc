@@ -6,7 +6,7 @@
 /*   By: jubarbie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/20 08:55:02 by jubarbie          #+#    #+#             */
-/*   Updated: 2018/04/20 18:20:33 by jubarbie         ###   ########.fr       */
+/*   Updated: 2018/04/23 13:26:33 by jubarbie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,9 @@ int main(void)
     void *p1 = ft_malloc(2);
     void *p2 = ft_malloc(2);
     void *p3 = ft_malloc(sizeof(char) * 8000);
+    void *p4 = ft_malloc(sizeof(char) * 8000);
+    void *p5 = ft_malloc(sizeof(char) * 8000);
+    void *p6 = ft_malloc(sizeof(char) * 8000);
     if (p1 == NULL || p2 == NULL || p3 == NULL)
     {
         printf("Error in malloc");
