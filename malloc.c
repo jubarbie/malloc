@@ -6,7 +6,7 @@
 /*   By: jubarbie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/20 08:36:03 by jubarbie          #+#    #+#             */
-/*   Updated: 2018/04/23 10:13:52 by jubarbie         ###   ########.fr       */
+/*   Updated: 2018/04/23 18:15:18 by jubarbie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,9 +103,21 @@ void            *ft_malloc(size_t size)
 
 void    ft_free(void *ptr)
 {
-    if (ptr != NULL)
+    void *p;
+
+    p = mem_tiny;
+    while((char *)p < (char *)mem_tiny + tiny_size)
     {
-        HDB_ALLOC(ptr) = 0;
+        if (p == ptr)
+        {
+            HDB_ALLOC(ptr) = 0;
+            break;
+        }
+        p = next_block(p);
+    }
+    if ((char *)p >= (char *)mem_tiny + tiny_size)
+    {
+        printf("Error: Trying to free pointer that was not allocated");
     }
 }
 
