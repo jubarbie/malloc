@@ -6,7 +6,7 @@
 /*   By: jubarbie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/20 08:55:02 by jubarbie          #+#    #+#             */
-/*   Updated: 2018/04/24 15:54:37 by jubarbie         ###   ########.fr       */
+/*   Updated: 2018/04/24 16:38:45 by jubarbie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,5 +55,12 @@ int main(void)
     printf("Freeing p5\n");
     ft_free(p5);
     show_alloc_mem();
+    p5 = ft_malloc(40);
+    if (p5 == NULL)
+        printf("Oops");
+    show_alloc_mem();
+    ft_free(p5);
+    show_alloc_mem();
+    ft_free(p5);
     return (0);
 }

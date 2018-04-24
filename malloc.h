@@ -6,7 +6,7 @@
 /*   By: jubarbie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/20 08:18:56 by jubarbie          #+#    #+#             */
-/*   Updated: 2018/04/24 12:23:18 by jubarbie         ###   ########.fr       */
+/*   Updated: 2018/04/24 18:07:50 by jubarbie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,12 @@
 
 # define TINY_SIZE 40000
 # define SMALL_SIZE 40000
-# define HDB(p) ((head_block *)p - 1)
-# define HDB_SIZE(p) HDB(p)->size
-# define HDB_ALLOC(p) HDB(p)->allocated 
+
+typedef struct {
+    size_t  size;
+    size_t  max_free;
+    void    *next;
+} mem_zone;
 
 typedef struct {
     size_t  size;
@@ -40,8 +43,6 @@ typedef struct {
 
 extern void    *mem_tiny;
 extern void    *mem_small;
-extern size_t   tiny_size;
-extern size_t   small_size;
 extern char     malloc_init;
 extern size_t   page_size;
 
