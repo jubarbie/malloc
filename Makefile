@@ -6,14 +6,15 @@
 #    By: jubarbie <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/04/20 08:58:23 by jubarbie          #+#    #+#              #
-#    Updated: 2018/04/20 12:16:23 by jubarbie         ###   ########.fr        #
+#    Updated: 2018/04/24 11:20:42 by jubarbie         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC=gcc
 CFLAGS= -Wall -Wextra -Werror
 SRC=    main.c \
-		malloc.c
+		malloc.c \
+		mem_block.c
 OBJ=$(SRC:.c=.o)
 NAME=malloc
 

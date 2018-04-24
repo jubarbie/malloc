@@ -6,7 +6,7 @@
 /*   By: jubarbie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/20 08:36:03 by jubarbie          #+#    #+#             */
-/*   Updated: 2018/04/23 18:15:18 by jubarbie         ###   ########.fr       */
+/*   Updated: 2018/04/24 12:09:49 by jubarbie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,26 +16,13 @@ void    *mem_tiny;
 void    *mem_small;
 size_t  tiny_size;
 size_t  small_size;
+size_t  page_size;
 char    malloc_init = 0;
-
-static void     *next_block(void *p)
-{
-    return ((char *)p + HDB_SIZE(p));
-}
-
-static size_t   block_size(size_t size)
-{
-    return (size + sizeof(head_block));
-}
-
-static size_t   payload_size(void *p)
-{
-    return (HDB_SIZE(p) - sizeof(head_block));
-}
 
 static void    *init_malloc()
 {
-    tiny_size = (ALIGN(block_size(TINY_SIZE), PAGE_SIZE));
+    page_size = sysconf(_SC_PAGE_SIZE);
+    tiny_size = (ALIGN(block_size(TINY_SIZE), page_size));
     mem_tiny = mmap(NULL, tiny_size, PROT_READ | PROT_WRITE, MAP_ANON | MAP_PRIVATE, -1, 0);
     if (mem_tiny == (void *) -1)
     {
@@ -43,8 +30,8 @@ static void    *init_malloc()
         return NULL;
     }
     mem_tiny = (head_block *)mem_tiny + 1;
-    HDB_SIZE(mem_tiny) = tiny_size;
-    HDB_ALLOC(mem_tiny) = 0;
+    set_hdb(mem_tiny, tiny_size, 0);
+    set_ftb_size(mem_tiny, tiny_size);
 
     malloc_init = 1;
     return mem_tiny;
@@ -58,22 +45,22 @@ static void     *malloc_in(void *first, size_t size)
 
     p = first;
     blk_sz = block_size(size);
-    while ((HDB_ALLOC(p) == 1 || (HDB_ALLOC(p) == 0 && (blk_sz > payload_size(p)))) && (char *)p + blk_sz < (char *)first + tiny_size)
+    while ((hdb_alloc(p) == 1 || (hdb_alloc(p) == 0 && (blk_sz > payload_size(p)))) && (char *)p + blk_sz < (char *)first + tiny_size)
     {
         p = next_block(p);
     }
     if ((char *)p + blk_sz > (char *)first + tiny_size) {
         return NULL;
     }
-    if (blk_sz == HDB_SIZE(p)) {
-        HDB_ALLOC(p) = 1;
+    if (blk_sz == hdb_size(p)) {
+        set_hdb_alloc(p, 1);
         return p;
     }
     new = (char *)p + blk_sz;
-    HDB_SIZE(new) = HDB_SIZE(p) - blk_sz;
-    HDB_ALLOC(new) = 0;
-    HDB_SIZE(p) = blk_sz;
-    HDB_ALLOC(p) = 1;
+    set_hdb(new, hdb_size(p) - blk_sz, 0);
+    set_ftb_size(new, hdb_size(p) - blk_sz);
+    set_hdb(p, blk_sz, 1);
+    set_ftb_size(p, blk_sz);
     return p;
 }
 
@@ -85,7 +72,7 @@ static void     print_block(void *p)
     }
     else
     {
-        printf("[%zu|%d] %p\n", HDB_SIZE(p), HDB_ALLOC(p), p);
+        printf("[%zu|%d] %zu bytes [%zu] %p\n", hdb_size(p), hdb_alloc(p), payload_size(p), ftb_size(p), p);
     }
 }
 
@@ -110,7 +97,7 @@ void    ft_free(void *ptr)
     {
         if (p == ptr)
         {
-            HDB_ALLOC(ptr) = 0;
+            set_hdb_alloc(ptr, 0);
             break;
         }
         p = next_block(p);
