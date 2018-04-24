@@ -6,7 +6,7 @@
 /*   By: jubarbie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/20 08:18:56 by jubarbie          #+#    #+#             */
-/*   Updated: 2018/04/24 11:59:47 by jubarbie         ###   ########.fr       */
+/*   Updated: 2018/04/24 12:23:18 by jubarbie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ foot_block   *ftb(void *ptr);
 void    set_ftb_size(void *ptr, size_t size);
 size_t  ftb_size(void *ptr);
 void    *next_block(void *ptr);
+void    *prev_block(void *ptr);
 size_t  block_size(size_t size);
 size_t  payload_size(void *ptr);
 void    *ft_malloc(size_t size);

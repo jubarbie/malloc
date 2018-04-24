@@ -6,7 +6,7 @@
 /*   By: jubarbie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/20 08:36:03 by jubarbie          #+#    #+#             */
-/*   Updated: 2018/04/24 12:09:49 by jubarbie         ###   ########.fr       */
+/*   Updated: 2018/04/24 12:39:37 by jubarbie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,7 @@ void            *ft_malloc(size_t size)
 void    ft_free(void *ptr)
 {
     void *p;
+    void    *n;
 
     p = mem_tiny;
     while((char *)p < (char *)mem_tiny + tiny_size)
@@ -98,6 +99,11 @@ void    ft_free(void *ptr)
         if (p == ptr)
         {
             set_hdb_alloc(ptr, 0);
+            n = next_block(ptr);
+            if (hdb_alloc(n) == 0)
+            {
+                set_hdb(ptr, hdb_size(ptr) + hdb_size(n), 0);
+            }
             break;
         }
         p = next_block(p);

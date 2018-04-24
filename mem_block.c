@@ -6,7 +6,7 @@
 /*   By: jubarbie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/24 11:12:10 by jubarbie          #+#    #+#             */
-/*   Updated: 2018/04/24 12:03:25 by jubarbie         ###   ########.fr       */
+/*   Updated: 2018/04/24 12:29:58 by jubarbie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,15 @@ void     *next_block(void *ptr)
     return ((char *)ptr + hdb_size(ptr));
 }
 
+void     *prev_block(void *ptr)
+{
+    size_t  size;
+    foot_block *ft;
+
+    ft = (foot_block *)hdb(ptr) - 1;
+    size = ft->size - sizeof(head_block) - sizeof(foot_block);
+    return ((char *)ft - size);
+}
 size_t   block_size(size_t size)
 {
     return (size + sizeof(head_block) + sizeof(foot_block));
