@@ -6,7 +6,7 @@
 /*   By: jubarbie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/20 08:36:03 by jubarbie          #+#    #+#             */
-/*   Updated: 2018/04/24 12:39:37 by jubarbie         ###   ########.fr       */
+/*   Updated: 2018/04/24 16:15:02 by jubarbie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,10 +88,32 @@ void            *ft_malloc(size_t size)
     return malloc_in(mem_tiny, size);
 }
 
+void    defragment(void *min, void *max, void *ptr)
+{
+    size_t  size;
+   
+
+    printf("b: %p\n", ptr);
+    while (prev_block(ptr) >= min && hdb_alloc(prev_block(ptr)) == 0)
+    {
+        ptr = prev_block(ptr);
+        if (ptr == min)
+        {
+            break ;
+        }
+    }
+    printf("%p\n", ptr);
+    while (next_block(ptr) < max && hdb_alloc(next_block(ptr)) == 0)
+    {
+        size =  hdb_size(ptr) + hdb_size(next_block(ptr));
+        set_hdb(ptr, size, 0);
+        set_ftb_size(ptr, size);
+    } 
+}
+
 void    ft_free(void *ptr)
 {
     void *p;
-    void    *n;
 
     p = mem_tiny;
     while((char *)p < (char *)mem_tiny + tiny_size)
@@ -99,18 +121,14 @@ void    ft_free(void *ptr)
         if (p == ptr)
         {
             set_hdb_alloc(ptr, 0);
-            n = next_block(ptr);
-            if (hdb_alloc(n) == 0)
-            {
-                set_hdb(ptr, hdb_size(ptr) + hdb_size(n), 0);
-            }
+            defragment(mem_tiny, (void *)((char *)mem_tiny + tiny_size), ptr);
             break;
         }
         p = next_block(p);
     }
     if ((char *)p >= (char *)mem_tiny + tiny_size)
     {
-        printf("Error: Trying to free pointer that was not allocated");
+        printf("Error: Trying to free pointer that was not allocated\n");
     }
 }
 

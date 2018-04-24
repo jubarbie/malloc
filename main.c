@@ -6,7 +6,7 @@
 /*   By: jubarbie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/20 08:55:02 by jubarbie          #+#    #+#             */
-/*   Updated: 2018/04/23 18:14:18 by jubarbie         ###   ########.fr       */
+/*   Updated: 2018/04/24 15:54:37 by jubarbie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,19 +24,36 @@ int main(void)
     {
         printf("Error in malloc");
     }
+    show_alloc_mem();
     ft_free(p2);
     show_alloc_mem();
     p2 = ft_malloc(3);
     show_alloc_mem();
     ft_free(p5);
+    show_alloc_mem();
     ft_free(p4);
     show_alloc_mem();
     p5 = ft_malloc(21);
     show_alloc_mem();
     p4 = ft_malloc(2);
     show_alloc_mem();
-    p6 = (char *)p6 + 3;
+    printf("Freeing p4\n");
+    ft_free(p4);
+    show_alloc_mem();
+    printf("Freeing p3\n");
+    ft_free(p3);
+    show_alloc_mem();
+    printf("Freeing p1\n");
+    ft_free(p1);
+    show_alloc_mem();
+    printf("Freeing p2\n");
+    ft_free(p2);
+    show_alloc_mem();
+    printf("Freeing p6\n");
     ft_free(p6);
+    show_alloc_mem();
+    printf("Freeing p5\n");
+    ft_free(p5);
     show_alloc_mem();
     return (0);
 }
