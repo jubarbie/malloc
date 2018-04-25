@@ -6,7 +6,7 @@
 /*   By: jubarbie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/20 08:55:02 by jubarbie          #+#    #+#             */
-/*   Updated: 2018/04/25 15:43:48 by jubarbie         ###   ########.fr       */
+/*   Updated: 2018/04/25 18:21:19 by jubarbie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,8 @@ int	main(void)
 	show_alloc_mem();
 	ft_free(p5);
 	p5 = ft_malloc(54);
+	show_alloc_mem();
+	ft_free(p5);
 	show_alloc_mem();
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: jubarbie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/25 11:34:51 by jubarbie          #+#    #+#             */
-/*   Updated: 2018/04/25 15:39:55 by jubarbie         ###   ########.fr       */
+/*   Updated: 2018/04/25 18:13:10 by jubarbie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,32 +25,32 @@ static void		print_block(void *p)
 	}
 }
 
-static void		print_room(void *room)
+static void		print_room(void *room, char *name)
 {	
+	void	*block;
 	void	*p;
+	int		i;
 	
-	printf("TINY : %p - %p : %lu bytes\n", room, room_limit(room), room_size(room));
+	i = 0;
 	p = room;
-	while ((char *)p < (char *)room_limit(room))
+	while(p)
 	{
-		print_block(p);
-		p = next_block(p);
+		printf("%d ", i);
+		printf("%s : %p - %p : %lu bytes\n", name, room, room_limit(room), room_size(room));
+		block = room;
+		while ((char *)block < (char *)room_limit(room))
+		{
+			print_block(block);
+			block = next_block(block);
+		}
+		p = next_room(p);
+		i++;
 	}
 }
 
 void			show_alloc_mem(void)
 {
-	void	*p;
-	int		i;
-
-	i = 0;
 	printf("----- Memory viewer -----\n");
-	p = g_mem_tiny;
-	while(p)
-	{
-		printf("%d ", i);
-		print_room(p);
-		p = next_room(p);
-		i++;
-	}
+	print_room(g_mem_tiny, "TINY");
+	print_room(g_mem_small, "SMALL");
 }

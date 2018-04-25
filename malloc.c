@@ -6,7 +6,7 @@
 /*   By: jubarbie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/20 08:36:03 by jubarbie          #+#    #+#             */
-/*   Updated: 2018/04/25 15:44:43 by jubarbie         ###   ########.fr       */
+/*   Updated: 2018/04/25 18:13:37 by jubarbie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,12 +39,13 @@ static void		init_malloc(void)
 {
 	if (g_malloc_init == 0)
 	{
-		printf("Init malloc\n");
 		g_page_size = getpagesize();
 		g_mem_tiny = NULL;
-		g_mem_tiny = add_room(g_mem_tiny, TINY_SIZE);
+		g_mem_small = NULL;
+		g_mem_tiny = add_room(g_mem_tiny, SMALL_SIZE);
+		g_mem_small = add_room(g_mem_small, SMALL_SIZE);
 		g_malloc_init = 1;
-	}
+	}	
 }
 
 static void		*malloc_in_room(void *room, size_t size)
@@ -76,9 +77,21 @@ void			*ft_malloc(size_t size)
 {
 	void	*p;
 	void	*room;
-
+	void	*first;
+	size_t	r_size;
+	
 	init_malloc();
-	room = g_mem_tiny;
+	if (size <= TINY_MAX)
+	{
+		r_size = TINY_SIZE;
+		first = g_mem_tiny;
+	}
+	else
+	{
+		r_size = SMALL_SIZE;
+		first = g_mem_small;
+	}
+	room = first;
 	while (room != NULL)
 	{
 		p = malloc_in_room(room, size);
@@ -88,7 +101,7 @@ void			*ft_malloc(size_t size)
 			if (next_room(room) == NULL)
 			{
 				printf("Adding a room\n");
-				add_room(g_mem_tiny, TINY_SIZE);
+				add_room(first, r_size);
 			}
 			printf("Moving\n");
 			room = next_room(room);

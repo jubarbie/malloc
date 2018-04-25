@@ -6,7 +6,7 @@
 /*   By: jubarbie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/25 11:29:48 by jubarbie          #+#    #+#             */
-/*   Updated: 2018/04/25 13:38:25 by jubarbie         ###   ########.fr       */
+/*   Updated: 2018/04/25 18:20:38 by jubarbie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,22 +32,45 @@ static void	defragment(void *min, void *max, void *ptr)
 	}
 }
 
-void		ft_free(void *ptr)
+static void	*find_room(void *ptr)
 {
 	void	*p;
 
 	p = g_mem_tiny;
-	while ((char *)p < (char *)room_limit(g_mem_tiny))
+	while (p != NULL)
 	{
-		if (p == ptr && hdb_alloc(ptr) == 1)
+		if (ptr >= p && ptr <= room_limit(p))
+			return (p);
+		p = next_room(p);
+	}
+	p = g_mem_small;
+	while (p != NULL)
+	{
+		if (ptr >= p && ptr <= room_limit(p))
+			return (p);
+		p = next_room(p);
+	}
+	return (NULL);
+}
+
+void		ft_free(void *ptr)
+{
+	void	*block;
+	void	*room;
+	
+	room = find_room(ptr);
+	block = room;
+	while ((char *)block < (char *)room_limit(room))
+	{
+		if (block == ptr && hdb_alloc(ptr) == 1)
 		{
 			set_hdb_alloc(ptr, 0);
-			defragment(g_mem_tiny, room_limit(g_mem_tiny), ptr);
+			defragment(room, room_limit(room), ptr);
 			break ;
 		}
-		p = next_block(p);
+		block = next_block(block);
 	}
-	if ((char *)p >= (char *)room_limit(g_mem_tiny))
+	if ((char *)block >= (char *)room_limit(room))
 	{
 		printf("Error: Trying to free pointer that was not allocated\n");
 	}
