@@ -1,35 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   malloc.h                                           :+:      :+:    :+:   */
+/*   foot_block.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jubarbie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/04/20 08:18:56 by jubarbie          #+#    #+#             */
-/*   Updated: 2018/04/25 12:17:30 by jubarbie         ###   ########.fr       */
+/*   Created: 2018/04/25 11:44:21 by jubarbie          #+#    #+#             */
+/*   Updated: 2018/04/25 12:05:16 by jubarbie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MALLOC_H
-# define MALLOC_H
-
-# include <stdlib.h>
-# include <stdio.h>
-# include <errno.h>
-# include <string.h>
-# include <unistd.h>
 #include "block.h"
-#include "room.h"
 
-# define TINY_SIZE 40000
-# define SMALL_SIZE 40000
+foot_block	*ftb(void *ptr)
+{
+	return ((foot_block *)((char *)hdb(ptr) + hdb_size(ptr)) - 1);
+}
 
-extern void    *g_mem_tiny;
-extern void    *g_mem_small;
-extern char     g_malloc_init;
+void		set_ftb_size(void *ptr, size_t size)
+{
+	ftb(ptr)->size = size;
+}
 
-void    *ft_malloc(size_t size);
-void    ft_free(void *ptr);
-void    show_alloc_mem();
-
-#endif
+size_t		ftb_size(void *ptr)
+{
+	return (ftb(ptr)->size);
+}
