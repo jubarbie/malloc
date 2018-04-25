@@ -6,7 +6,7 @@
 /*   By: jubarbie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/20 08:36:03 by jubarbie          #+#    #+#             */
-/*   Updated: 2018/04/25 12:17:14 by jubarbie         ###   ########.fr       */
+/*   Updated: 2018/04/25 15:44:43 by jubarbie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,47 +17,49 @@ void	*g_mem_small;
 size_t	g_page_size;
 char	g_malloc_init = 0;
 
-static void		*add_mem_zone(void *first, size_t size)
+static void		*add_room(void *first, size_t size)
 {
-	mem_zone	*p;
+	t_hd_room	*p;
 
 	if (first == NULL)
 	{
-		first = create_mem_zone(size);
+		first = new_room(size);
 		return (first);
 	}
-	p = (mem_zone *)first;
-	while (p->next != NULL)
+	p = first;
+	while (next_room(p) != NULL)
 	{
-		p = p->next;
+		p = next_room(p);
 	}
-	p->next = create_mem_zone(size);
-	return (p->next);
+	get_hd_room(p)->next = new_room(size);
+	return (get_hd_room(p)->next);
 }
 
-static void		*init_malloc(void)
+static void		init_malloc(void)
 {
-	g_page_size = getpagesize(); ;
-	g_mem_tiny = NULL;
-	g_mem_tiny = add_mem_zone(g_mem_tiny, TINY_SIZE);
-	g_malloc_init = 1;
-	return (g_mem_tiny);
+	if (g_malloc_init == 0)
+	{
+		printf("Init malloc\n");
+		g_page_size = getpagesize();
+		g_mem_tiny = NULL;
+		g_mem_tiny = add_room(g_mem_tiny, TINY_SIZE);
+		g_malloc_init = 1;
+	}
 }
 
-static void		*malloc_in_zone(void *zone, size_t size)
+static void		*malloc_in_room(void *room, size_t size)
 {
 	void	*p;
-	void	*new;
 	size_t	blk_sz;
 
-	p = zone;
+	p = room;
 	blk_sz = block_size(size);
 	while ((hdb_alloc(p) == 1 || (hdb_alloc(p) == 0 && (blk_sz >
-	payload_size(p)))) && (char *)p + blk_sz < (char *)zone_limit(zone))
+	payload_size(p)))) && (char *)p + blk_sz < (char *)room_limit(room))
 	{
 		p = next_block(p);
 	}
-	if ((char *)p + blk_sz > (char *)zone_limit(zone))
+	if ((char *)p + blk_sz > (char *)room_limit(room))
 	{
 		return (NULL);
 	}
@@ -66,25 +68,35 @@ static void		*malloc_in_zone(void *zone, size_t size)
 		set_hdb_alloc(p, 1);
 		return (p);
 	}
-	new = (char *)p + blk_sz;
-	set_hdb(new, hdb_size(p) - blk_sz, 0);
-	set_ftb_size(new, hdb_size(p) - blk_sz);
-	set_hdb(p, blk_sz, 1);
-	set_ftb_size(p, blk_sz);
+	split_block(p, blk_sz);
 	return (p);
 }
 
 void			*ft_malloc(size_t size)
 {
 	void	*p;
+	void	*room;
 
-	if (g_malloc_init == 0)
+	init_malloc();
+	room = g_mem_tiny;
+	while (room != NULL)
 	{
-		p = init_malloc();
-		if (p == (void *)-1)
+		p = malloc_in_room(room, size);
+		if (p == NULL)
+		{
+			printf("Malloc failed\n");
+			if (next_room(room) == NULL)
+			{
+				printf("Adding a room\n");
+				add_room(g_mem_tiny, TINY_SIZE);
+			}
+			printf("Moving\n");
+			room = next_room(room);
+		}
+		else
 		{
 			return (p);
 		}
 	}
-	return (malloc_in_zone(g_mem_tiny, size));
+	return (NULL);
 }

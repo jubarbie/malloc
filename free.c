@@ -6,7 +6,7 @@
 /*   By: jubarbie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/25 11:29:48 by jubarbie          #+#    #+#             */
-/*   Updated: 2018/04/25 11:39:41 by jubarbie         ###   ########.fr       */
+/*   Updated: 2018/04/25 13:38:25 by jubarbie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,17 +37,17 @@ void		ft_free(void *ptr)
 	void	*p;
 
 	p = g_mem_tiny;
-	while ((char *)p < (char *)zone_limit(g_mem_tiny))
+	while ((char *)p < (char *)room_limit(g_mem_tiny))
 	{
 		if (p == ptr && hdb_alloc(ptr) == 1)
 		{
 			set_hdb_alloc(ptr, 0);
-			defragment(g_mem_tiny, zone_limit(g_mem_tiny), ptr);
+			defragment(g_mem_tiny, room_limit(g_mem_tiny), ptr);
 			break ;
 		}
 		p = next_block(p);
 	}
-	if ((char *)p >= (char *)zone_limit(g_mem_tiny))
+	if ((char *)p >= (char *)room_limit(g_mem_tiny))
 	{
 		printf("Error: Trying to free pointer that was not allocated\n");
 	}

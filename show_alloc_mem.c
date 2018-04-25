@@ -6,7 +6,7 @@
 /*   By: jubarbie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/25 11:34:51 by jubarbie          #+#    #+#             */
-/*   Updated: 2018/04/25 11:39:09 by jubarbie         ###   ########.fr       */
+/*   Updated: 2018/04/25 15:39:55 by jubarbie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,16 +25,32 @@ static void		print_block(void *p)
 	}
 }
 
-void			show_alloc_mem(void)
-{
+static void		print_room(void *room)
+{	
 	void	*p;
-
-	printf("----- Memory viewer -----\n");
-	printf("TINY : %p - %lu bytes\n", g_mem_tiny, mem_zone_size(g_mem_tiny));
-	p = g_mem_tiny;
-	while ((char *)p < (char *)zone_limit(g_mem_tiny))
+	
+	printf("TINY : %p - %p : %lu bytes\n", room, room_limit(room), room_size(room));
+	p = room;
+	while ((char *)p < (char *)room_limit(room))
 	{
 		print_block(p);
 		p = next_block(p);
+	}
+}
+
+void			show_alloc_mem(void)
+{
+	void	*p;
+	int		i;
+
+	i = 0;
+	printf("----- Memory viewer -----\n");
+	p = g_mem_tiny;
+	while(p)
+	{
+		printf("%d ", i);
+		print_room(p);
+		p = next_room(p);
+		i++;
 	}
 }

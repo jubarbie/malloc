@@ -6,7 +6,7 @@
 /*   By: jubarbie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/20 08:55:02 by jubarbie          #+#    #+#             */
-/*   Updated: 2018/04/25 11:48:35 by jubarbie         ###   ########.fr       */
+/*   Updated: 2018/04/25 15:43:48 by jubarbie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	main(void)
 {
 	void *p1 = ft_malloc(2);
 	void *p2 = ft_malloc(23 * sizeof(int));
-	void *p3 = ft_malloc(sizeof(char) * 8124);
+	void *p3 = ft_malloc(sizeof(char) * 3500);
 	void *p4 = ft_malloc(sizeof(char) * 80);
 	void *p5 = ft_malloc(sizeof(char) * 450);
 	void *p6 = ft_malloc(sizeof(char) * 92);

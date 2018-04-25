@@ -6,7 +6,7 @@
 /*   By: jubarbie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/25 11:24:17 by jubarbie          #+#    #+#             */
-/*   Updated: 2018/04/25 12:11:39 by jubarbie         ###   ########.fr       */
+/*   Updated: 2018/04/25 15:45:48 by jubarbie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,11 @@
 
 size_t		g_page_size;
 
-void		*create_mem_zone(size_t size)
+void		*new_room(size_t size)
 {
 	void	*p;
 
-	size = block_size(size) + sizeof(mem_zone);
+	size = block_size(size) + sizeof(t_hd_room);
 	size = (ALIGN(size, g_page_size));
 	p = mmap(NULL, size, PROT_READ | PROT_WRITE, MAP_ANON | MAP_PRIVATE, -1, 0);
 	if (p == NULL)
@@ -27,28 +27,36 @@ void		*create_mem_zone(size_t size)
 		printf("Could not map %zu bytes: %s\n", size, strerror(errno));
 		return (NULL);
 	}
-	((mem_zone *)p)->size = size;
-	((mem_zone *)p)->next = NULL;
-	p = (char *)p + sizeof(mem_zone) + sizeof(head_block);
-	set_hdb(p, size - sizeof(mem_zone), 0);
-	set_ftb_size(p, size - sizeof(mem_zone));
+	((t_hd_room *)p)->size = size;
+	((t_hd_room *)p)->next = NULL;
+	p = (char *)p + sizeof(t_hd_room) + sizeof(t_hdb);
+	set_hdb(p, size - sizeof(t_hd_room), 0);
+	set_ftb_size(p, size - sizeof(t_hd_room));
 	return (p);
 }
 
-mem_zone	*get_mem_zone(void *zone)
-{
-	return ((mem_zone *)((char *)zone - sizeof(head_block) - sizeof(mem_zone)));
-}
-
-size_t		mem_zone_size(void *zone)
-{
-	return (get_mem_zone(zone)->size);
-}
-
-void		*zone_limit(void *zone)
+t_hd_room	*get_hd_room(void *room)
 {
 	size_t	meta_size;
 
-	meta_size = sizeof(mem_zone) + sizeof(head_block);
-	return ((void *)((char *)zone + mem_zone_size(zone) - meta_size));
+	meta_size = sizeof(t_hd_room) + sizeof(t_hdb);
+	return ((t_hd_room *)((char *)room - meta_size));
+}
+
+size_t		room_size(void *room)
+{
+	return (get_hd_room(room)->size);
+}
+
+void		*room_limit(void *room)
+{
+	size_t	meta_size;
+
+	meta_size = sizeof(t_hd_room) + sizeof(t_hdb);
+	return ((void *)((char *)room + room_size(room) - meta_size));
+}
+
+void		*next_room(void *room)
+{
+	return (get_hd_room(room)->next);
 }
