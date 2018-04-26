@@ -6,7 +6,7 @@
 /*   By: jubarbie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/20 08:55:02 by jubarbie          #+#    #+#             */
-/*   Updated: 2018/04/26 14:43:47 by jubarbie         ###   ########.fr       */
+/*   Updated: 2018/04/26 18:31:48 by jubarbie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,6 @@ int	main(void)
 	void *p5 = ft_malloc(sizeof(char) * 450);
 	void *p6 = ft_malloc(sizeof(char) * 92);
 	void *p7 = ft_malloc(sizeof(char) * 4001);
-	if (p7 == NULL)
-	{
-		printf("Pas top top top");
-	}
 	if (p1 == NULL || p2 == NULL || p3 == NULL)
 	{
 		printf("Error in malloc");

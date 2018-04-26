@@ -6,7 +6,7 @@
 /*   By: jubarbie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/20 08:18:56 by jubarbie          #+#    #+#             */
-/*   Updated: 2018/04/26 14:23:22 by jubarbie         ###   ########.fr       */
+/*   Updated: 2018/04/26 18:19:28 by jubarbie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <unistd.h>
 # include "block.h"
 # include "room.h"
+# include "libft.h"
 
 # define TINY_SIZE 4000
 # define TINY_MAX 100

@@ -6,12 +6,12 @@
 #    By: jubarbie <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/04/20 08:58:23 by jubarbie          #+#    #+#              #
-#    Updated: 2018/04/25 12:17:43 by jubarbie         ###   ########.fr        #
+#    Updated: 2018/04/26 18:18:26 by jubarbie         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC=gcc
-CFLAGS= -Wall -Wextra -Werror
+CFLAGS= -Ilibft -Wall -Wextra -Werror
 SRC=    main.c \
 		malloc.c \
 		room.c \
@@ -24,7 +24,8 @@ OBJ=$(SRC:.c=.o)
 NAME=malloc
 
 $(NAME): $(OBJ)
-	$(CC) -o $@ $^
+	make -C libft
+	$(CC) -Llibft/ -lft -o $@ $^
 
 all: $(NAME)
 
@@ -32,9 +33,11 @@ all: $(NAME)
 	$(CC) -o $@ -c $< $(CFLAGS)
 
 clean:
+	make clean -C libft
 	rm -rf $(OBJ)
 
 fclean: clean
+	make fclean -C libft
 	rm -rf $(NAME)
 
 re: fclean all

@@ -6,7 +6,7 @@
 /*   By: jubarbie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/20 08:36:03 by jubarbie          #+#    #+#             */
-/*   Updated: 2018/04/26 15:40:11 by jubarbie         ###   ########.fr       */
+/*   Updated: 2018/04/26 18:32:26 by jubarbie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,6 @@ void			*ft_malloc(size_t size)
 		{
 			g_mem_medium = room;
 		}
-		printf("room: %p, mem: %p\n", room, g_mem_medium);
 		return (malloc_in_room(room, size));
 	}
 	room = first;
@@ -109,13 +108,10 @@ void			*ft_malloc(size_t size)
 		p = malloc_in_room(room, size);
 		if (p == NULL)
 		{
-			printf("Malloc failed\n");
 			if (next_room(room) == NULL)
 			{
-				printf("Adding a room\n");
 				add_room(first, r_size);
 			}
-			printf("Moving\n");
 			room = next_room(room);
 		}
 		else
