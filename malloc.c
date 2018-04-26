@@ -6,7 +6,7 @@
 /*   By: jubarbie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/20 08:36:03 by jubarbie          #+#    #+#             */
-/*   Updated: 2018/04/25 18:13:37 by jubarbie         ###   ########.fr       */
+/*   Updated: 2018/04/26 14:14:51 by jubarbie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 void	*g_mem_tiny;
 void	*g_mem_small;
+void	*g_mem_medium;
 size_t	g_page_size;
 char	g_malloc_init = 0;
 
@@ -42,10 +43,11 @@ static void		init_malloc(void)
 		g_page_size = getpagesize();
 		g_mem_tiny = NULL;
 		g_mem_small = NULL;
+		g_mem_medium = NULL;
 		g_mem_tiny = add_room(g_mem_tiny, SMALL_SIZE);
 		g_mem_small = add_room(g_mem_small, SMALL_SIZE);
 		g_malloc_init = 1;
-	}	
+	}
 }
 
 static void		*malloc_in_room(void *room, size_t size)
@@ -86,10 +88,15 @@ void			*ft_malloc(size_t size)
 		r_size = TINY_SIZE;
 		first = g_mem_tiny;
 	}
-	else
+	else if (size <= SMALL_MAX)
 	{
 		r_size = SMALL_SIZE;
 		first = g_mem_small;
+	}
+	else 
+	{
+		r_size = size;
+		first = g_mem_medium;
 	}
 	room = first;
 	while (room != NULL)
