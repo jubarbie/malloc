@@ -6,7 +6,7 @@
 /*   By: jubarbie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/25 11:29:48 by jubarbie          #+#    #+#             */
-/*   Updated: 2018/04/25 18:31:10 by jubarbie         ###   ########.fr       */
+/*   Updated: 2018/04/26 16:30:26 by jubarbie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,8 @@ static void	defragment(void *min, void *max, void *ptr)
 
 static void	*find_room(void *ptr)
 {
-	void	*p;
+	void		*p;
+	void		*prev;
 
 	p = g_mem_tiny;
 	while (p != NULL)
@@ -50,6 +51,23 @@ static void	*find_room(void *ptr)
 			return (p);
 		p = next_room(p);
 	}
+	p = g_mem_medium;
+	prev = NULL;
+	while (p != NULL)
+	{
+		if (ptr == p)
+		{
+			if (prev != NULL)
+				get_hd_room(prev)->next = next_room(ptr);
+			else
+				g_mem_medium = next_room(p);
+			printf("Munmapping: %p - %zu\n", get_hd_room(ptr), room_size(ptr));
+			munmap((void *)get_hd_room(ptr), room_size(ptr));
+			return (NULL);
+		}
+		prev = p;
+		p = next_room(p);
+	}
 	return (NULL);
 }
 
@@ -57,21 +75,24 @@ void		ft_free(void *ptr)
 {
 	void	*block;
 	void	*room;
-	
+
 	room = find_room(ptr);
-	block = room;
-	while ((char *)block < (char *)room_limit(room))
+	if (room != NULL)
 	{
-		if (block == ptr && hdb_alloc(ptr) == 1)
+		block = room;
+		while ((char *)block < (char *)room_limit(room))
 		{
-			set_hdb_alloc(ptr, 0);
-			defragment(room, room_limit(room), ptr);
-			break ;
+			if (block == ptr && hdb_alloc(ptr) == 1)
+			{
+				set_hdb_alloc(ptr, 0);
+				defragment(room, room_limit(room), ptr);
+				break ;
+			}
+			block = next_block(block);
 		}
-		block = next_block(block);
-	}
-	if ((char *)block >= (char *)room_limit(room))
-	{
-		printf("Error: Trying to free pointer that was not allocated\n");
+		if ((char *)block >= (char *)room_limit(room))
+		{
+			printf("Error: Trying to free pointer that was not allocated\n");
+		}
 	}
 }

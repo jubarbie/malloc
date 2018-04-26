@@ -6,7 +6,7 @@
 /*   By: jubarbie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/25 11:24:17 by jubarbie          #+#    #+#             */
-/*   Updated: 2018/04/25 15:45:48 by jubarbie         ###   ########.fr       */
+/*   Updated: 2018/04/26 16:29:00 by jubarbie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ void		*new_room(size_t size)
 	size = block_size(size) + sizeof(t_hd_room);
 	size = (ALIGN(size, g_page_size));
 	p = mmap(NULL, size, PROT_READ | PROT_WRITE, MAP_ANON | MAP_PRIVATE, -1, 0);
+	printf("Mapping: %p - %zu\n", p, size);
 	if (p == NULL)
 	{
 		printf("Could not map %zu bytes: %s\n", size, strerror(errno));

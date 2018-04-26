@@ -6,7 +6,7 @@
 /*   By: jubarbie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/20 08:36:03 by jubarbie          #+#    #+#             */
-/*   Updated: 2018/04/26 14:14:51 by jubarbie         ###   ########.fr       */
+/*   Updated: 2018/04/26 15:40:11 by jubarbie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,8 +95,13 @@ void			*ft_malloc(size_t size)
 	}
 	else 
 	{
-		r_size = size;
-		first = g_mem_medium;
+		room = add_room(g_mem_medium, size);
+		if (g_mem_medium == NULL)
+		{
+			g_mem_medium = room;
+		}
+		printf("room: %p, mem: %p\n", room, g_mem_medium);
+		return (malloc_in_room(room, size));
 	}
 	room = first;
 	while (room != NULL)
