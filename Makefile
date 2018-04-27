@@ -29,8 +29,12 @@ $(NAME): $(OBJ)
 
 all: $(NAME)
 
+builddev: $(OBJ)
+	@$(CC) -Llibft/ -lft -o $@ $^
+	@echo "\033[32m[OK]\033[0m"
+
 %.o: %.c
-	$(CC) -o $@ -c $< $(CFLAGS)
+	@$(CC) -o $@ -c $< $(CFLAGS)
 
 clean:
 	make clean -C libft

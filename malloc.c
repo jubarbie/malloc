@@ -61,10 +61,10 @@ static void		*malloc_in_room(void *room, size_t size)
 	payload_size(p)))) && (char *)p + blk_sz < (char *)room_limit(room))
 	{
 		p = next_block(p);
-	}
+    }
 	if ((char *)p + blk_sz > (char *)room_limit(room))
 	{
-		return (NULL);
+	    return (NULL);
 	}
 	if (blk_sz == hdb_size(p))
 	{
