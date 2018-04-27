@@ -6,7 +6,7 @@
 /*   By: jubarbie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/20 08:18:56 by jubarbie          #+#    #+#             */
-/*   Updated: 2018/04/26 18:19:28 by jubarbie         ###   ########.fr       */
+/*   Updated: 2018/04/27 19:25:38 by jubarbie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@ extern void	*g_mem_small;
 extern void	*g_mem_medium;
 extern char	g_malloc_init;
 
-void	*ft_malloc(size_t size);
-void	ft_free(void *ptr);
-void	show_alloc_mem();
+extern void	*ft_malloc(size_t size);
+extern void	ft_free(void *ptr);
+extern void	show_alloc_mem();
 
 #endif

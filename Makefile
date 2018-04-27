@@ -6,12 +6,12 @@
 #    By: jubarbie <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/04/20 08:58:23 by jubarbie          #+#    #+#              #
-#    Updated: 2018/04/26 18:18:26 by jubarbie         ###   ########.fr        #
+#    Updated: 2018/04/27 19:19:21 by jubarbie         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC=gcc
-CFLAGS= -Ilibft -Wall -Wextra -Werror
+CFLAGS= -fPIC -Ilibft -Wall -Wextra -Werror
 SRC=    main.c \
 		malloc.c \
 		room.c \
@@ -21,16 +21,22 @@ SRC=    main.c \
 		free.c \
 		show_alloc_mem.c
 OBJ=$(SRC:.c=.o)
-NAME=malloc
+ifeq ($(HOSTTYPE),)
+HOSTTYPE := $(shell uname -m)_$(shell uname -s)
+endif
+NAME=libft_malloc_$(HOSTTYPE).so
+LINK=libft_malloc.so
 
 $(NAME): $(OBJ)
-	make -C libft
-	$(CC) -Llibft/ -lft -o $@ $^
-
+	@make -C libft
+	@$(CC) -Llibft/ -lft -o $@ $^
+	@ln -s $(NAME) $(LINK)
+	echo 'libft_malloc created'
+	
 all: $(NAME)
 
 %.o: %.c
-	$(CC) -o $@ -c $< $(CFLAGS)
+	@$(CC) -o $@ -c $< $(CFLAGS)
 
 clean:
 	make clean -C libft
@@ -38,6 +44,6 @@ clean:
 
 fclean: clean
 	make fclean -C libft
-	rm -rf $(NAME)
+	rm -rf $(NAME) $(LINK)
 
 re: fclean all
