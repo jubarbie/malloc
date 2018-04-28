@@ -5,68 +5,62 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: jubarbie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/04/20 08:55:02 by jubarbie          #+#    #+#             */
-/*   Updated: 2018/04/26 18:31:48 by jubarbie         ###   ########.fr       */
+/*   Created: 2018/04/28 14:34:34 by jubarbie          #+#    #+#             */
+/*   Updated: 2018/04/28 18:39:13 by jubarbie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "malloc.h"
 
-int	main(void)
+static void	test0()
 {
-	void *p1 = ft_malloc(2);
-	void *p2 = ft_malloc(23 * sizeof(int));
-	void *p3 = ft_malloc(sizeof(char) * 3500);
-	void *p4 = ft_malloc(sizeof(char) * 80);
-	void *p5 = ft_malloc(sizeof(char) * 450);
-	void *p6 = ft_malloc(sizeof(char) * 92);
-	void *p7 = ft_malloc(sizeof(char) * 4001);
-	if (p1 == NULL || p2 == NULL || p3 == NULL)
-	{
-		printf("Error in malloc");
-	}
-	show_alloc_mem();
-	ft_free(p2);
-	show_alloc_mem();
-	p2 = ft_malloc(3);
-	show_alloc_mem();
-	ft_free(p5);
-	show_alloc_mem();
-	ft_free(p4);
-	show_alloc_mem();
-	p5 = ft_malloc(21);
-	show_alloc_mem();
-	p4 = ft_malloc(2);
-	show_alloc_mem();
-	printf("Freeing p4\n");
-	ft_free(p4);
-	show_alloc_mem();
-	printf("Freeing p3\n");
-	ft_free(p3);
-	show_alloc_mem();
-	printf("Freeing p1\n");
-	ft_free(p1);
-	show_alloc_mem();
-	printf("Freeing p2\n");
-	ft_free(p2);
-	show_alloc_mem();
-	printf("Freeing p6\n");
-	ft_free(p6);
-	show_alloc_mem();
-	printf("Freeing p5\n");
-	ft_free(p5);
-	show_alloc_mem();
-	p5 = ft_malloc(40);
-	if (p5 == NULL)
-		printf("Oops");
-	show_alloc_mem();
-	ft_free(p5);
-	show_alloc_mem();
-	ft_free(p5);
-	p5 = ft_malloc(54);
-	show_alloc_mem();
-	ft_free(p5);
-	ft_free(p7);
-	show_alloc_mem();
+	int i; 
+
+	i = 0; 
+	while (i < 1024) 
+	{ 
+		i++; 
+	} 
+}
+
+static void  test1()
+{
+	int i; 
+	char *addr; 
+
+	i = 0; 
+	while (i < 1024) 
+	{ 
+		addr = (char*)ft_malloc(1024); 
+		addr[0] = 42; 
+		i++; 
+	} 
+}
+
+static void	test2()
+{
+	int i; 
+	char *addr; 
+
+	i = 0; 
+	while (i < 1024) 
+	{ 
+		addr = (char*)ft_malloc(1024); 
+		addr[0] = 42; 
+		ft_free(addr); 
+		i++; 
+	} 
+}
+
+int	main(int argc, char **argv)
+{
+	if (argc >= 2 && argv[1][0] == '0')
+		test0();
+	if (argc >= 2 && argv[1][0] == '1')
+		test1();
+	if (argc >= 2 && argv[1][0] == '2')
+		test2();
+	if (argc == 3 && argv[2][0] == 'v')
+		show_alloc_mem();
 	return (0);
 }

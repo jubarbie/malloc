@@ -6,7 +6,7 @@
 #    By: jubarbie <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/04/20 08:58:23 by jubarbie          #+#    #+#              #
-#    Updated: 2018/04/28 14:51:15 by jubarbie         ###   ########.fr        #
+#    Updated: 2018/04/28 14:49:28 by jubarbie         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,16 +21,27 @@ SRC=    main.c \
 		free.c \
 		show_alloc_mem.c
 OBJ=$(SRC:.c=.o)
-NAME=malloc
-.PHONY: clean fclean all re
+# ifeq ($(HOSTTYPE),)
+# HOSTTYPE := $(shell uname -m)_$(shell uname -s)
+# endif
+# NAME=libft_malloc_$(HOSTTYPE).so
+# LINK=libft_malloc.so
+# .PHONY: clean fclean all re
 
 $(NAME): $(OBJ)
-	@$(CC) -o $@ $^
-
+	@$(CC) -shared -o $@ $^
+	@ln -s $(NAME) $(LINK)
+	echo 'libft_malloc created'
+	
 all: $(NAME)
 
+malloc: $(OBJ) 
+	$(GCC) $(OBJ) -o $@ $v
+
+test: malloc
+
 %.o: %.c
-	@$(CC) -o $@ -c $< $(CFLAGS)
+	@$(CC) -o $@ $< $(CFLAGS)
 
 clean:
 	rm -f $(OBJ)

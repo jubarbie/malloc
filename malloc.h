@@ -6,7 +6,7 @@
 /*   By: jubarbie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/20 08:18:56 by jubarbie          #+#    #+#             */
-/*   Updated: 2018/04/27 19:25:38 by jubarbie         ###   ########.fr       */
+/*   Updated: 2018/04/28 18:47:29 by jubarbie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,11 @@
 # include <unistd.h>
 # include "block.h"
 # include "room.h"
-# include "libft.h"
 
-# define TINY_SIZE 4000
-# define TINY_MAX 100
-# define SMALL_SIZE 40000
-# define SMALL_MAX 4000
+# define TINY_SIZE 10000
+# define TINY_MAX 1000
+# define SMALL_SIZE 100000
+# define SMALL_MAX 10000
 
 extern void	*g_mem_tiny;
 extern void	*g_mem_small;

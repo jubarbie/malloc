@@ -6,7 +6,7 @@
 /*   By: jubarbie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/20 08:36:03 by jubarbie          #+#    #+#             */
-/*   Updated: 2018/04/26 18:32:26 by jubarbie         ###   ########.fr       */
+/*   Updated: 2018/04/28 16:49:51 by jubarbie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,12 +40,11 @@ static void		init_malloc(void)
 {
 	if (g_malloc_init == 0)
 	{
-		g_page_size = getpagesize();
 		g_mem_tiny = NULL;
 		g_mem_small = NULL;
 		g_mem_medium = NULL;
-		g_mem_tiny = add_room(g_mem_tiny, SMALL_SIZE);
-		g_mem_small = add_room(g_mem_small, SMALL_SIZE);
+		//g_mem_tiny = add_room(g_mem_tiny, SMALL_SIZE);
+		//g_mem_small = add_room(g_mem_small, SMALL_SIZE);
 		g_malloc_init = 1;
 	}
 }
@@ -87,11 +86,21 @@ void			*ft_malloc(size_t size)
 	{
 		r_size = TINY_SIZE;
 		first = g_mem_tiny;
+		if (g_mem_tiny == NULL)
+		{
+			g_mem_tiny = add_room(g_mem_tiny, r_size);
+			return (malloc_in_room(g_mem_tiny, size));
+		}
 	}
 	else if (size <= SMALL_MAX)
 	{
 		r_size = SMALL_SIZE;
 		first = g_mem_small;
+		if (g_mem_small == NULL)
+		{
+			g_mem_small = add_room(g_mem_small, r_size);
+			return (malloc_in_room(g_mem_small, size));
+		}
 	}
 	else 
 	{

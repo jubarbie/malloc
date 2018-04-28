@@ -6,7 +6,7 @@
 /*   By: jubarbie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/25 12:06:27 by jubarbie          #+#    #+#             */
-/*   Updated: 2018/04/25 14:55:44 by jubarbie         ###   ########.fr       */
+/*   Updated: 2018/04/28 12:24:07 by jubarbie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <errno.h>
 # include <stdio.h>
 # include <string.h>
+# include <unistd.h>
 
 # define ALIGN(x,a) __ALIGN_MASK(x,(typeof(x))(a)-1)
 # define __ALIGN_MASK(x,mask) (((x)+(mask))&~(mask))
@@ -27,8 +28,6 @@ typedef struct {
 	size_t	max_free;
 	void	*next;
 }	t_hd_room;
-
-extern size_t	g_page_size;
 
 void		*new_room(size_t size);
 t_hd_room	*get_hd_room(void *room);
