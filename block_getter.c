@@ -1,28 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   foot_block.c                                       :+:      :+:    :+:   */
+/*   head_block.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jubarbie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/04/25 11:44:21 by jubarbie          #+#    #+#             */
-/*   Updated: 2018/04/30 12:30:11 by jubarbie         ###   ########.fr       */
+/*   Created: 2018/04/25 11:45:27 by jubarbie          #+#    #+#             */
+/*   Updated: 2018/04/30 15:55:21 by jubarbie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "block.h"
 
-size_t *ftb(void *ptr)
+char	get_b_alloc(t_block *ptr)
 {
-	return ((size_t *)((char *)hdb(ptr) + hdb_size(ptr)) - 1);
+	return (ptr->allocated);
 }
 
-void	set_ftb_size(void *ptr, size_t size)
+size_t	get_b_size(t_block *ptr)
 {
-	*(ftb(ptr)) = size;
+	return (ptr->size);
 }
 
-size_t	ftb_size(void *ptr)
+t_block	*get_b_next(t_block *ptr)
 {
-	return (*(ftb(ptr)));
+	return (ptr->next);
+}
+
+t_block	*get_b_prev(t_block *ptr)
+{
+	return (ptr->prev);
 }

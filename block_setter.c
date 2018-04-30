@@ -1,44 +1,46 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   head_block.c                                       :+:      :+:    :+:   */
+/*   block_setter.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jubarbie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/04/25 11:45:27 by jubarbie          #+#    #+#             */
-/*   Updated: 2018/04/25 14:32:28 by jubarbie         ###   ########.fr       */
+/*   Created: 2018/04/30 14:40:49 by jubarbie          #+#    #+#             */
+/*   Updated: 2018/04/30 18:14:42 by jubarbie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "block.h"
 
-t_hdb	*hdb(void *ptr)
+t_block	*set_b(t_block *ptr, size_t size, char alloc)
 {
-	return ((t_hdb *)ptr - 1);
+	set_b_size(ptr, size);
+	set_b_alloc(ptr, alloc);
+	return ptr;
 }
 
-void	set_hdb(void *ptr, size_t size, char alloc)
+t_block	*set_b_next(t_block *ptr, t_block *next)
 {
-	set_hdb_size(ptr, size);
-	set_hdb_alloc(ptr, alloc);
+	ptr->next = next;
+	return (ptr);
 }
 
-void	set_hdb_alloc(void *ptr, char alloc)
+t_block	*set_b_prev(t_block *ptr, t_block *prev)
 {
-	hdb(ptr)->allocated = alloc;
+	ptr->prev = prev;
+	return (ptr);
 }
 
-void	set_hdb_size(void *ptr, size_t size)
+t_block	*set_b_alloc(t_block *ptr, char alloc)
 {
-	hdb(ptr)->size = size;
+	ptr->allocated = alloc;
+	return ptr;
 }
 
-char	hdb_alloc(void *ptr)
+t_block	*set_b_size(t_block *ptr, size_t size)
 {
-	return ((hdb(ptr))->allocated);
+	ptr->size = size;
+	return ptr;
 }
 
-size_t	hdb_size(void *ptr)
-{
-	return ((hdb(ptr))->size);
-}
+

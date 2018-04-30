@@ -6,7 +6,7 @@
 /*   By: jubarbie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/20 08:18:56 by jubarbie          #+#    #+#             */
-/*   Updated: 2018/04/30 12:22:46 by jubarbie         ###   ########.fr       */
+/*   Updated: 2018/04/30 19:18:32 by jubarbie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@
 # include <string.h>
 # include <unistd.h>
 # include "block.h"
-# include "room.h"
 
 # define TINY_SIZE 20000
 # define TINY_MAX 2000
@@ -34,7 +33,7 @@ typedef struct {
 	void	*medium;
 } t_mem;
 
-extern t_mem	*g_mem;
+extern t_mem	g_mem;
 
 extern void	*ft_malloc(size_t size);
 extern void	ft_free(void *ptr);

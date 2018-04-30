@@ -6,7 +6,7 @@
 #    By: jubarbie <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/04/20 08:58:23 by jubarbie          #+#    #+#              #
-#    Updated: 2018/04/28 14:51:15 by jubarbie         ###   ########.fr        #
+#    Updated: 2018/04/30 15:43:49 by jubarbie         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,10 +14,9 @@ CC=gcc
 CFLAGS= -Wall -Wextra -Werror 
 SRC=    main.c \
 		malloc.c \
-		room.c \
+		block_getter.c \
+		block_setter.c \
 		block.c \
-		foot_block.c \
-		head_block.c \
 		free.c \
 		show_alloc_mem.c
 OBJ=$(SRC:.c=.o)

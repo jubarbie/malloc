@@ -6,110 +6,62 @@
 /*   By: jubarbie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/25 11:29:48 by jubarbie          #+#    #+#             */
-/*   Updated: 2018/04/30 11:48:23 by jubarbie         ###   ########.fr       */
+/*   Updated: 2018/04/30 19:17:08 by jubarbie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "malloc.h"
 
-static void	defragment(void *min, void *max, void *ptr)
+static char b_cont(t_block *b1, t_block *b2)
+{
+	if (b1 > b2)
+		return (0);
+	if ((char *)payload(b1) + get_b_size(b1) == (char *)b2)
+		return (1);
+	return (0);
+}
+
+static t_block	*defragment(t_block *ptr)
 {
 	size_t	size;
+	t_block	*min;
 
-	while (prev_block(ptr) >= min && hdb_alloc(prev_block(ptr)) == 0)
+	min = ptr;
+	while (get_b_prev(min) != NULL && get_b_alloc(get_b_prev(min)) == 0 && b_cont(get_b_prev(min), min) == 1)
+		min = get_b_prev(min);
+	while (get_b_next(ptr) != NULL && get_b_alloc(get_b_next(ptr)) == 0 && b_cont(ptr, get_b_next(ptr)) == 1)
 	{
-		ptr = prev_block(ptr);
-		if (ptr == min)
-		{
-			break ;
-		}
+		size = get_b_size(ptr) + block_size(get_b_size(get_b_next(ptr)));
+		set_b_next(ptr, get_b_next(get_b_next(ptr)));
+		set_b(ptr, size, 0);
 	}
-	while (next_block(ptr) < max && hdb_alloc(next_block(ptr)) == 0)
-	{
-		size = hdb_size(ptr) + hdb_size(next_block(ptr));
-		set_hdb(ptr, size, 0);
-		set_ftb_size(ptr, size);
-	}
+	if (get_b_next(ptr) != NULL)
+		set_b_prev(get_b_next(ptr), ptr);
+	return (ptr);
 }
 
-/*
-static int		count_rooms(void *ptr)
+static t_block *unalloc_block(void *ptr, t_block *first)
 {
-	void	*p;
-	int		i;
+	t_block	*block;
 
-	p = ptr;
-	i = 1;
-	if (p == NULL)
-		return (0);
-	while (next_room(p) != NULL)
+	ptr = (t_block *)ptr - 1;
+	block = first;
+	while (block != NULL)
 	{
-		i++;
-	}
-	return (i);
-}*/
-
-static void	*unalloc_block(void *room, void *block)
-{
-	void	*nav;
-
-	nav = room;
-	while ((char *)nav < (char *)room_limit(room))
-	{
-		if (nav == block && hdb_alloc(block) == 1)
+		if (block == ptr && get_b_alloc(block) == 1)
 		{
-			set_hdb_alloc(block, 0);
-			defragment(room, room_limit(room), block);
-			break ;
+			set_b_alloc(block, 0);
+			return (defragment(block));
 		}
-		nav = next_block(nav);
+		block = get_b_next(block);
 	}
-	if ((char *)nav >= (char *)room_limit(room))
-	{
-		printf("Error: Trying to free pointer that was not allocated\n");
-		return (NULL);
-	}
-	return (block);
-}
-
-static void *free_block(void *block, void *mem)
-{
-	void	*p;
-	void	*prev;
-
-	p = mem;
-	prev = NULL;
-	while (p != NULL)
-	{
-		if (block >= p && block <= room_limit(p))
-		{
-			if (unalloc_block(p, block) != NULL && count_alloc_blocks(p) == 0)
-			{
-				if (mem == g_mem->medium)
-				{
-					if (prev != NULL)
-						get_hd_room(prev)->next = next_room(block);
-					else
-						mem = next_room(p);
-					munmap((void *)get_hd_room(p), room_size(p));
-					p = NULL;
-				}
-			}
-			return (mem);
-		}
-		prev = p;
-		p = next_room(p);
-	}
-	return (mem);
+	//printf("Error: Trying to free pointer that was not allocated\n");
+	return (NULL);
 }
 
 void	ft_free(void *ptr)
 {	
-	if (g_mem != NULL)
-	{
-		g_mem->tiny = free_block(ptr, g_mem->tiny);
-		g_mem->small = free_block(ptr, g_mem->small);
-		g_mem->medium = free_block(ptr, g_mem->medium);
-
-	}
+	unalloc_block(ptr, g_mem.tiny);
+	unalloc_block(ptr, g_mem.small);
+	unalloc_block(ptr, g_mem.medium);
 }
