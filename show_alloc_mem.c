@@ -6,7 +6,7 @@
 /*   By: jubarbie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/25 11:34:51 by jubarbie          #+#    #+#             */
-/*   Updated: 2018/04/30 19:17:30 by jubarbie         ###   ########.fr       */
+/*   Updated: 2018/04/30 20:05:51 by jubarbie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,11 @@ static size_t	print_block(t_block *p)
 	size_t	s;
 
 	s = 0;
-	printf("[%d]%p : %zu octets\n", get_b_alloc(p), p, get_b_size(p));
+	printf("[%d]%p - %p: %zu octets\n", get_b_alloc(p), payload(p), (char *)payload(p) + get_b_size(p) - 1, get_b_size(p));
 	if (get_b_alloc(p) == 1)
 	{
 		s += get_b_size(p);
 	}
-	//printf("\t-> %p\n\t<- %p\n", get_b_next(p), get_b_prev(p));
 	return (s);
 }
 

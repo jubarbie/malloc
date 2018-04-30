@@ -6,7 +6,7 @@
 /*   By: jubarbie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/25 12:00:26 by jubarbie          #+#    #+#             */
-/*   Updated: 2018/04/30 15:59:54 by jubarbie         ###   ########.fr       */
+/*   Updated: 2018/04/30 19:46:32 by jubarbie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ t_block		*set_b_alloc(t_block *ptr, char alloc);
 t_block		*set_b(t_block *ptr, size_t size, char alloc);
 t_block		*get_b_next(t_block *ptr);
 t_block		*get_b_prev(t_block *ptr);
-size_t		count_alloc_blocks(t_block *ptr);
+size_t		count_alloc_blocks(t_block *ptr, size_t size);
 t_block		*split_block(t_block *ptr, size_t size);
 void		*payload(t_block *ptr);
 

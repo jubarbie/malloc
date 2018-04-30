@@ -6,7 +6,7 @@
 /*   By: jubarbie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/24 11:12:10 by jubarbie          #+#    #+#             */
-/*   Updated: 2018/04/30 18:41:30 by jubarbie         ###   ########.fr       */
+/*   Updated: 2018/04/30 20:15:06 by jubarbie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,14 +37,16 @@ t_block	*new_room(size_t size, t_block *prev, t_block *next)
 	return (p);
 }
 
-size_t	count_alloc_blocks(t_block *ptr)
+size_t	count_alloc_blocks(t_block *ptr, size_t size)
 {
 	size_t	c;
 	t_block	*p;
+	size_t	asize;
 
 	c = 0;
 	p = ptr;
-	while (p != NULL)
+	asize = ALIGN(block_size(size), getpagesize());
+	while (p != NULL && (char *)p < (char *)ptr + asize)
 	{
 		if (get_b_alloc(p) == 1)
 			c++;

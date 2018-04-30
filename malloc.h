@@ -6,7 +6,7 @@
 /*   By: jubarbie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/20 08:18:56 by jubarbie          #+#    #+#             */
-/*   Updated: 2018/04/30 19:18:32 by jubarbie         ###   ########.fr       */
+/*   Updated: 2018/04/30 19:33:53 by jubarbie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,10 @@
 # include <unistd.h>
 # include "block.h"
 
-# define TINY_SIZE 20000
-# define TINY_MAX 2000
-# define SMALL_SIZE 100000
-# define SMALL_MAX 10000
-
-# pragma pack(1)
+# define TINY_SIZE 4000
+# define TINY_MAX 1024
+# define SMALL_SIZE 102400
+# define SMALL_MAX 10240
 
 typedef struct {
 	void	*tiny;

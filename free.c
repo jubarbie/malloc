@@ -6,7 +6,7 @@
 /*   By: jubarbie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/25 11:29:48 by jubarbie          #+#    #+#             */
-/*   Updated: 2018/04/30 19:17:08 by jubarbie         ###   ########.fr       */
+/*   Updated: 2018/04/30 20:15:22 by jubarbie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@ static t_block *unalloc_block(void *ptr, t_block *first)
 		}
 		block = get_b_next(block);
 	}
-	//printf("Error: Trying to free pointer that was not allocated\n");
 	return (NULL);
 }
 
