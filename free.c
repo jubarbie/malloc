@@ -6,7 +6,7 @@
 /*   By: jubarbie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/25 11:29:48 by jubarbie          #+#    #+#             */
-/*   Updated: 2018/04/28 19:01:51 by jubarbie         ###   ########.fr       */
+/*   Updated: 2018/04/30 11:48:23 by jubarbie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,23 +32,6 @@ static void	defragment(void *min, void *max, void *ptr)
 	}
 }
 
-static size_t	count_alloc_blocks(void *ptr)
-{
-	size_t	c;
-	void	*p;
-	void	*limit;
-
-	c = 0;
-	p = ptr;
-	limit = room_limit(ptr);
-	while (p < limit)
-	{
-		if (hdb_alloc(p) == 1)
-			c++;
-		p = next_block(p);
-	}
-	return (c);
-}
 /*
 static int		count_rooms(void *ptr)
 {
@@ -102,7 +85,7 @@ static void *free_block(void *block, void *mem)
 		{
 			if (unalloc_block(p, block) != NULL && count_alloc_blocks(p) == 0)
 			{
-				if (mem == g_mem_medium)
+				if (mem == g_mem->medium)
 				{
 					if (prev != NULL)
 						get_hd_room(prev)->next = next_room(block);
@@ -122,7 +105,11 @@ static void *free_block(void *block, void *mem)
 
 void	ft_free(void *ptr)
 {	
-	g_mem_tiny = free_block(ptr, g_mem_tiny);
-	g_mem_small = free_block(ptr, g_mem_small);
-	g_mem_medium = free_block(ptr, g_mem_medium);
+	if (g_mem != NULL)
+	{
+		g_mem->tiny = free_block(ptr, g_mem->tiny);
+		g_mem->small = free_block(ptr, g_mem->small);
+		g_mem->medium = free_block(ptr, g_mem->medium);
+
+	}
 }

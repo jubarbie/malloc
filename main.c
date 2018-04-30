@@ -6,11 +6,12 @@
 /*   By: jubarbie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/28 14:34:34 by jubarbie          #+#    #+#             */
-/*   Updated: 2018/04/28 18:39:13 by jubarbie         ###   ########.fr       */
+/*   Updated: 2018/04/30 12:37:52 by jubarbie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "malloc.h"
+#include <stdlib.h>
 
 static void	test0()
 {
@@ -45,9 +46,9 @@ static void	test2()
 	i = 0; 
 	while (i < 1024) 
 	{ 
-		addr = (char*)ft_malloc(1024); 
+		addr = (char*)malloc(1024); 
 		addr[0] = 42; 
-		ft_free(addr); 
+		free(addr); 
 		i++; 
 	} 
 }

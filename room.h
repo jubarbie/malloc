@@ -6,7 +6,7 @@
 /*   By: jubarbie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/25 12:06:27 by jubarbie          #+#    #+#             */
-/*   Updated: 2018/04/28 12:24:07 by jubarbie         ###   ########.fr       */
+/*   Updated: 2018/04/30 12:22:41 by jubarbie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@
 
 # define ALIGN(x,a) __ALIGN_MASK(x,(typeof(x))(a)-1)
 # define __ALIGN_MASK(x,mask) (((x)+(mask))&~(mask))
+
+# pragma pack (1)
 
 typedef struct {
 	size_t	size;

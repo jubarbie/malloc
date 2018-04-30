@@ -6,7 +6,7 @@
 /*   By: jubarbie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/25 11:34:51 by jubarbie          #+#    #+#             */
-/*   Updated: 2018/04/28 18:22:04 by jubarbie         ###   ########.fr       */
+/*   Updated: 2018/04/30 12:43:37 by jubarbie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static size_t	print_block(void *p)
 	if (hdb_alloc(p) == 1)
 	{
 		s += hdb_size(p);
-		printf("%p - %p : %zu octetcs\n", hdb(p), (char *)hdb(p) + hdb_size(p),
+		printf("%p - %p : %zu octets\n", hdb(p), (char *)hdb(p) + hdb_size(p),
 				payload_size(p));
 	}
 	return (s);
@@ -48,14 +48,20 @@ static size_t	print_mem(void *ptr, char *name)
 
 	s = 0;
 	room = ptr;
+	printf("%s : ", name);
 	if (ptr != NULL)
 	{
-		printf("%s : %p\n", name, get_hd_room(ptr));
+		printf("%p\n", get_hd_room(ptr));
 		while(room)
 		{	
 			s += print_room(room);		
 			room = next_room(room);
+			printf("------------------\n");
 		}
+	}
+	else
+	{
+		printf("NULL\n");
 	}
 	return (s);
 }
@@ -65,8 +71,8 @@ void			show_alloc_mem(void)
 	size_t	s;
 
 	s = 0;
-	s += print_mem(g_mem_tiny, "TINY");
-	s += print_mem(g_mem_small, "SMALL");
-	s += print_mem(g_mem_medium, "LARGE");
+	s += print_mem(g_mem->tiny, "TINY");
+	s += print_mem(g_mem->small, "SMALL");
+	s += print_mem(g_mem->medium, "LARGE");
 	printf("Total : %zu octets\n", s);
 }

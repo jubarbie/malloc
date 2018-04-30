@@ -6,17 +6,13 @@
 /*   By: jubarbie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/20 08:36:03 by jubarbie          #+#    #+#             */
-/*   Updated: 2018/04/28 16:49:51 by jubarbie         ###   ########.fr       */
+/*   Updated: 2018/04/30 12:05:08 by jubarbie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "malloc.h"
 
-void	*g_mem_tiny;
-void	*g_mem_small;
-void	*g_mem_medium;
-size_t	g_page_size;
-char	g_malloc_init = 0;
+t_mem	*g_mem = NULL;
 
 static void		*add_room(void *first, size_t size)
 {
@@ -36,17 +32,22 @@ static void		*add_room(void *first, size_t size)
 	return (get_hd_room(p)->next);
 }
 
-static void		init_malloc(void)
+static t_mem		*init_malloc(t_mem *mem)
 {
-	if (g_malloc_init == 0)
+	size_t	s;
+
+	s = (ALIGN(sizeof(t_mem), getpagesize()));
+	if (mem == NULL)
 	{
-		g_mem_tiny = NULL;
-		g_mem_small = NULL;
-		g_mem_medium = NULL;
-		//g_mem_tiny = add_room(g_mem_tiny, SMALL_SIZE);
-		//g_mem_small = add_room(g_mem_small, SMALL_SIZE);
-		g_malloc_init = 1;
+		mem = (t_mem *)mmap(NULL, s, PROT_READ | PROT_WRITE, MAP_ANON | MAP_PRIVATE, -1, 0);
+		if (mem != NULL)
+		{
+			mem->tiny = NULL;
+			mem->small = NULL;
+			mem->medium = NULL;
+		}
 	}
+	return mem;
 }
 
 static void		*malloc_in_room(void *room, size_t size)
@@ -81,33 +82,33 @@ void			*ft_malloc(size_t size)
 	void	*first;
 	size_t	r_size;
 	
-	init_malloc();
+	g_mem = init_malloc(g_mem);
 	if (size <= TINY_MAX)
 	{
 		r_size = TINY_SIZE;
-		first = g_mem_tiny;
-		if (g_mem_tiny == NULL)
+		first = g_mem->tiny;
+		if (g_mem->tiny == NULL)
 		{
-			g_mem_tiny = add_room(g_mem_tiny, r_size);
-			return (malloc_in_room(g_mem_tiny, size));
+			g_mem->tiny = add_room(g_mem->tiny, r_size);
+			return (malloc_in_room(g_mem->tiny, size));
 		}
 	}
 	else if (size <= SMALL_MAX)
 	{
 		r_size = SMALL_SIZE;
-		first = g_mem_small;
-		if (g_mem_small == NULL)
+		first = g_mem->small;
+		if (g_mem->small == NULL)
 		{
-			g_mem_small = add_room(g_mem_small, r_size);
-			return (malloc_in_room(g_mem_small, size));
+			g_mem->small = add_room(g_mem->small, r_size);
+			return (malloc_in_room(g_mem->small, size));
 		}
 	}
 	else 
 	{
-		room = add_room(g_mem_medium, size);
-		if (g_mem_medium == NULL)
+		room = add_room(g_mem->medium, size);
+		if (g_mem->medium == NULL)
 		{
-			g_mem_medium = room;
+			g_mem->medium = room;
 		}
 		return (malloc_in_room(room, size));
 	}
