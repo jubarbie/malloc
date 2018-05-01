@@ -6,47 +6,45 @@
 #    By: jubarbie <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/04/20 08:58:23 by jubarbie          #+#    #+#              #
-#    Updated: 2018/04/28 14:49:28 by jubarbie         ###   ########.fr        #
+#    Updated: 2018/05/01 19:35:56 by jubarbie         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC=gcc
-CFLAGS= -Wall -Wextra -Werror 
-SRC=    main.c \
-		malloc.c \
-		room.c \
-		block.c \
-		foot_block.c \
-		head_block.c \
-		free.c \
-		show_alloc_mem.c
+CFLAGS= -ILibs/libft -IIncludes -Wall -Wextra -Werror 
+SRC=	Sources/malloc.c \
+		Sources/block_getter.c \
+		Sources/block_setter.c \
+		Sources/block.c \
+		Sources/block2.c \
+		Sources/free.c \
+		Sources/realloc.c \
+		Sources/show_alloc_mem.c
 OBJ=$(SRC:.c=.o)
-# ifeq ($(HOSTTYPE),)
-# HOSTTYPE := $(shell uname -m)_$(shell uname -s)
-# endif
-# NAME=libft_malloc_$(HOSTTYPE).so
-# LINK=libft_malloc.so
-# .PHONY: clean fclean all re
+ifeq ($(HOSTTYPE),)
+HOSTTYPE := $(shell uname -m)_$(shell uname -s)
+endif
+NAME=libft_malloc_$(HOSTTYPE).so
+LINK=libft_malloc.so
+.PHONY: clean fclean all re
 
 $(NAME): $(OBJ)
-	@$(CC) -shared -o $@ $^
+	@make -C Libs/libft
+	@$(CC) -LLibs/libft -lft -shared -o $@ $^
 	@ln -s $(NAME) $(LINK)
-	echo 'libft_malloc created'
+	@echo 'libft_malloc created'
 	
 all: $(NAME)
 
-malloc: $(OBJ) 
-	$(GCC) $(OBJ) -o $@ $v
-
-test: malloc
-
 %.o: %.c
-	@$(CC) -o $@ $< $(CFLAGS)
+	@$(CC) -o $@ -c $< $(CFLAGS)
 
 clean:
-	rm -f $(OBJ)
+	@make clean -C Libs/libft
+	@rm -f $(OBJ)
 
 fclean: clean
-	rm -f $(NAME) $(LINK)
+	@make fclean -C Libs/libft
+	@rm -f $(NAME) $(LINK)
 
 re: fclean all

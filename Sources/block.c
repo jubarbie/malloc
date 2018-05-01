@@ -6,7 +6,7 @@
 /*   By: jubarbie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/24 11:12:10 by jubarbie          #+#    #+#             */
-/*   Updated: 2018/04/30 20:15:06 by jubarbie         ###   ########.fr       */
+/*   Updated: 2018/05/01 18:13:19 by jubarbie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,14 @@ size_t		g_page_size;
 t_block	*new_room(size_t size, t_block *prev, t_block *next)
 {
 	void	*p;
-	size_t	blk_sz;
+	size_t	sz;
 
-	blk_sz = block_size(size);
-	blk_sz = (ALIGN(blk_sz, getpagesize()));
-	p = mmap(NULL, blk_sz, PROT_READ | PROT_WRITE, MAP_ANON | MAP_PRIVATE, -1, 0);
+	sz = block_size(size);
+	sz = (ALIGN(sz, getpagesize()));
+	p = mmap(NULL, sz, PROT_READ | PROT_WRITE, MAP_ANON | MAP_PRIVATE, -1, 0);
 	if (p == NULL)
 	{
-		printf("Could not map %zu bytes: %s\n", size, strerror(errno));
+		ft_putendl("Mmap error");
 		return (NULL);
 	}
 	set_b(p, size, 0);
@@ -57,7 +57,9 @@ size_t	count_alloc_blocks(t_block *ptr, size_t size)
 
 void	*payload(t_block *ptr)
 {
-	return (ptr + 1);
+	if (ptr == NULL)
+		return (NULL);
+	return ((void *)(ptr + 1));
 }
 
 t_block	*split_block(t_block *start, size_t size)
@@ -73,7 +75,8 @@ t_block	*split_block(t_block *start, size_t size)
 	set_b(start, size, 1);
 	set_b_next(start, new);
 	set_b_prev(new, start);
-	return start;
+	defragment(new);
+	return (start);
 }
 
 size_t	block_size(size_t size)
