@@ -6,12 +6,11 @@
 /*   By: jubarbie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/26 15:09:50 by jubarbie          #+#    #+#             */
-/*   Updated: 2016/02/26 15:16:06 by jubarbie         ###   ########.fr       */
+/*   Updated: 2018/05/02 16:53:18 by jubarbie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include <stdlib.h>
 
 static int	ft_nbrlen(int nb, int base)
 {

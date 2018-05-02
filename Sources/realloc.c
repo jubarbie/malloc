@@ -6,7 +6,7 @@
 /*   By: jubarbie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/30 11:24:04 by jubarbie          #+#    #+#             */
-/*   Updated: 2018/05/01 21:08:58 by jubarbie         ###   ########.fr       */
+/*   Updated: 2018/05/02 16:49:25 by jubarbie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,11 @@ static void		*new_alloc(t_block *old, size_t size)
 {
 	void	*new;
 
-	new = ft_malloc(size);
+	new = malloc(size);
 	if (new == NULL)
 		return (NULL);
 	ft_memcpy(new, payload(old), get_b_size(old));
-	ft_free(payload(old));
+	free(payload(old));
 	return (new);
 }
 
@@ -47,7 +47,7 @@ static t_block	*fusion_blocks(t_block *block, t_block *next, size_t size)
 	return (set_b_size(block, size));
 }
 
-void			*ft_realloc(void *ptr, size_t size)
+void			*realloc(void *ptr, size_t size)
 {
 	t_block	*block;
 	t_block	*next;
@@ -56,7 +56,7 @@ void			*ft_realloc(void *ptr, size_t size)
 	if (g_mem.option == 1)
 		ft_putendl("Rellocating");
 	if (ptr == NULL)
-		return (ft_malloc(size));
+		return (malloc(size));
 	block = find_block(ptr);
 	if (block == NULL)
 		return (NULL);

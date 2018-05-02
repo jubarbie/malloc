@@ -6,14 +6,13 @@
 /*   By: jubarbie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/20 08:18:56 by jubarbie          #+#    #+#             */
-/*   Updated: 2018/05/01 21:15:43 by jubarbie         ###   ########.fr       */
+/*   Updated: 2018/05/02 16:49:36 by jubarbie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MALLOC_H
 # define MALLOC_H
 
-# include <stdlib.h>
 # include <stdio.h>
 # include <errno.h>
 # include <string.h>
@@ -35,9 +34,9 @@ typedef struct	s_mem {
 
 extern	t_mem	g_mem;
 
-extern void		*ft_malloc(size_t size);
-extern void		ft_free(void *ptr);
-extern void		*ft_realloc(void *ptr, size_t size);
+extern void		*malloc(size_t size);
+extern void		free(void *ptr);
+extern void		*realloc(void *ptr, size_t size);
 extern void		show_alloc_mem();
 
 #endif

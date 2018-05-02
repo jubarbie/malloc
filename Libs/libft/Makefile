@@ -6,12 +6,12 @@
 #    By: jubarbie <jubarbie@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/10/30 16:51:35 by jubarbie          #+#    #+#              #
-#    Updated: 2018/05/01 19:01:16 by jubarbie         ###   ########.fr        #
+#    Updated: 2018/05/02 17:01:33 by jubarbie         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC=gcc
-CFLAGS=	-Wall -Wextra -Werror
+CFLAGS= -I"../../Includes" -I"." -Wall -Wextra -Werror
 SRC=	ft_atoi.c \
 		ft_bzero.c \
 		ft_isalnum.c \

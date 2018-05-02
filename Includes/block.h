@@ -6,14 +6,13 @@
 /*   By: jubarbie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/25 12:00:26 by jubarbie          #+#    #+#             */
-/*   Updated: 2018/05/01 18:49:07 by jubarbie         ###   ########.fr       */
+/*   Updated: 2018/05/02 19:35:08 by jubarbie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef BLOCK_H
 # define BLOCK_H
 
-# include <stdlib.h>
 # include <sys/mman.h>
 # include <unistd.h>
 # include <errno.h>
@@ -44,6 +43,8 @@ t_block			*set_b_alloc(t_block *ptr, char alloc);
 t_block			*set_b(t_block *ptr, size_t size, char alloc);
 t_block			*get_b_next(t_block *ptr);
 t_block			*get_b_prev(t_block *ptr);
+char			get_b_first(t_block *ptr);
+t_block			*set_b_first(t_block *ptr);
 size_t			count_alloc_blocks(t_block *ptr, size_t size);
 t_block			*split_block(t_block *ptr, size_t size);
 t_block			*defragment(t_block *ptr);

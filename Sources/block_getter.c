@@ -6,17 +6,28 @@
 /*   By: jubarbie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/25 11:45:27 by jubarbie          #+#    #+#             */
-/*   Updated: 2018/05/01 12:21:18 by jubarbie         ###   ########.fr       */
+/*   Updated: 2018/05/02 19:34:06 by jubarbie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "block.h"
 
+char	get_b_first(t_block *ptr)
+{
+	if (ptr == NULL)
+		return (-1);
+	if (ptr->allocated & (1 << 1))
+		return (1);
+	return (0);
+}
+
 char	get_b_alloc(t_block *ptr)
 {
 	if (ptr == NULL)
 		return (-1);
-	return (ptr->allocated);
+	if (ptr->allocated & (1 << 0))
+		return (1);
+	return (0);
 }
 
 size_t	get_b_size(t_block *ptr)

@@ -6,7 +6,7 @@
 /*   By: jubarbie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/01 18:34:16 by jubarbie          #+#    #+#             */
-/*   Updated: 2018/05/01 18:39:30 by jubarbie         ###   ########.fr       */
+/*   Updated: 2018/05/02 18:33:42 by jubarbie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ t_block	*find_block_in_mem(t_block *mem, t_block *block)
 {
 	t_block *b;
 
+	if (mem == NULL || block == NULL)
+		return (NULL);
 	b = mem;
 	while (b != NULL)
 	{
@@ -28,13 +30,15 @@ t_block	*find_block_in_mem(t_block *mem, t_block *block)
 
 t_block	*find_block(void *ptr)
 {
-	ptr = (t_block *)ptr - 1;
-	if (find_block_in_mem(g_mem.tiny, ptr) == (t_block *)ptr)
-		return ((t_block *)ptr);
-	if (find_block_in_mem(g_mem.small, ptr) == (t_block *)ptr)
-		return ((t_block *)ptr);
-	if (find_block_in_mem(g_mem.medium, ptr) == (t_block *)ptr)
-		return ((t_block *)ptr);
+	if (ptr == NULL)
+		return (NULL);
+	ptr = (t_block *)((t_block *)ptr - 1);
+	if (find_block_in_mem(g_mem.tiny, ptr) == ptr)
+		return (ptr);
+	if (find_block_in_mem(g_mem.small, ptr) == ptr)
+		return (ptr);
+	if (find_block_in_mem(g_mem.medium, ptr) == ptr)
+		return (ptr);
 	return (NULL);
 }
 

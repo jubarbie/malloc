@@ -6,7 +6,7 @@
 /*   By: jubarbie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/20 20:36:14 by jubarbie          #+#    #+#             */
-/*   Updated: 2016/02/25 11:02:35 by jubarbie         ###   ########.fr       */
+/*   Updated: 2018/05/02 17:33:12 by jubarbie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,5 +14,17 @@
 
 void	ft_putnbr(int n)
 {
-	ft_putstr(ft_itoa(n));
+	char	*nbr;
+
+	nbr = ft_itoa(n);
+	if (nbr != NULL)
+	{
+		ft_putstr(nbr);
+		free(nbr);
+		nbr = NULL;
+	}
+	else
+	{
+		ft_putstr("itoa failed");
+	}
 }

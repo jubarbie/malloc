@@ -6,12 +6,11 @@
 /*   By: jubarbie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/19 18:24:30 by jubarbie          #+#    #+#             */
-/*   Updated: 2016/02/20 18:10:18 by jubarbie         ###   ########.fr       */
+/*   Updated: 2018/05/02 16:56:14 by jubarbie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include <stdlib.h>
 
 void	ft_strclr(char *s)
 {

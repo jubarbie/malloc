@@ -6,7 +6,7 @@
 /*   By: jubarbie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/24 11:12:10 by jubarbie          #+#    #+#             */
-/*   Updated: 2018/05/01 18:13:19 by jubarbie         ###   ########.fr       */
+/*   Updated: 2018/05/02 19:38:42 by jubarbie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ t_block	*new_room(size_t size, t_block *prev, t_block *next)
 		return (NULL);
 	}
 	set_b(p, size, 0);
+	set_b_first(p);
 	set_b_next(p, next);
 	set_b_prev(p, prev);
 	if (prev != NULL)

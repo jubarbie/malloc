@@ -6,7 +6,7 @@
 /*   By: jubarbie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/20 20:32:17 by jubarbie          #+#    #+#             */
-/*   Updated: 2016/02/20 20:33:38 by jubarbie         ###   ########.fr       */
+/*   Updated: 2018/05/02 17:14:16 by jubarbie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	ft_putstr(char const *s)
 {
-	if (s)
+	if (s != NULL)
 		while (*s)
 		{
 			ft_putchar(*s);

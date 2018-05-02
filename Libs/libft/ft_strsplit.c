@@ -6,13 +6,11 @@
 /*   By: jubarbie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/20 19:23:41 by jubarbie          #+#    #+#             */
-/*   Updated: 2016/02/25 11:04:33 by jubarbie         ###   ########.fr       */
+/*   Updated: 2018/05/02 16:57:36 by jubarbie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include <stdlib.h>
-#include <stdio.h>
 
 static size_t	word_len(char *s, char c)
 {
