@@ -6,7 +6,7 @@
 /*   By: jubarbie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/04 11:33:44 by jubarbie          #+#    #+#             */
-/*   Updated: 2018/05/04 16:00:02 by jubarbie         ###   ########.fr       */
+/*   Updated: 2018/05/04 19:56:03 by jubarbie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,14 +28,14 @@ static unsigned long int	ft_power_long(unsigned long int n, int power)
 	return (res);
 }
 
-static size_t	ft_nbrlen(unsigned long int n)
+static size_t				ft_nbrlen(unsigned long int n)
 {
 	if (n == 0)
 		return (0);
 	return (1 + ft_nbrlen(n / 10));
 }
 
-static char		*do_itoa(char *str, unsigned long int n, size_t len)
+static char					*do_itoa(char *str, unsigned long int n, size_t len)
 {
 	char				*ps;
 	unsigned long int	dig;
@@ -52,7 +52,7 @@ static char		*do_itoa(char *str, unsigned long int n, size_t len)
 	return (str);
 }
 
-char			*ft_sizetoa(unsigned long int n)
+char						*ft_sizetoa(unsigned long int n)
 {
 	size_t	len;
 	char	*str;

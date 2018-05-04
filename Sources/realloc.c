@@ -6,7 +6,7 @@
 /*   By: jubarbie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/30 11:24:04 by jubarbie          #+#    #+#             */
-/*   Updated: 2018/05/04 11:09:22 by jubarbie         ###   ########.fr       */
+/*   Updated: 2018/05/04 19:57:02 by jubarbie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static t_block	*fusion_blocks(t_block *block, t_block *next, size_t size)
 	return (set_b_size(block, size));
 }
 
-void			*realloc(void *ptr, size_t size)
+static void		*dispatch_realloc(void *ptr, size_t size)
 {
 	t_block	*block;
 	t_block	*next;
@@ -71,4 +71,14 @@ void			*realloc(void *ptr, size_t size)
 	if (s == size)
 		return (fusion_blocks(block, next, size));
 	return (grow_block(block, next, size));
+}
+
+void			*realloc(void *ptr, size_t size)
+{
+	void	*addr;
+
+	pthread_mutex_lock(&g_mutex);
+	addr = dispatch_realloc(ptr, size);
+	pthread_mutex_unlock(&g_mutex);
+	return (addr);
 }

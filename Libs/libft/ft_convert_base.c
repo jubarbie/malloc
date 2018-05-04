@@ -6,13 +6,13 @@
 /*   By: jubarbie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/26 15:09:50 by jubarbie          #+#    #+#             */
-/*   Updated: 2018/05/04 16:00:16 by jubarbie         ###   ########.fr       */
+/*   Updated: 2018/05/04 19:44:50 by jubarbie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static unsigned long int	ft_power_long(unsigned long int n, int power)
+static unsigned long int	ft_pw_lg(unsigned long int n, int power)
 {
 	unsigned long int res;
 
@@ -24,11 +24,11 @@ static unsigned long int	ft_power_long(unsigned long int n, int power)
 	if (power == 1)
 		return (n);
 	if (power > 2)
-		res = n * (ft_power_long(n, --power));
+		res = n * (ft_pw_lg(n, --power));
 	return (res);
 }
 
-static int	ft_nbrlen(unsigned long int nb, int base)
+static int					ft_nbrlen(unsigned long int nb, int base)
 {
 	int i;
 
@@ -60,12 +60,12 @@ static unsigned long int	ft_to_dec(char *nbr, char *base)
 		j = -1;
 		while (++j < len_base)
 			if (nbr[i] == base[j])
-				nbr_dec = nbr_dec + (j * ft_power_long(len_base, len_nbr - i - 1));
+				nbr_dec = nbr_dec + (j * ft_pw_lg(len_base, len_nbr - i - 1));
 	}
 	return (nbr_dec);
 }
 
-char					*ft_convert_base(char *nbr, char *bf, char *bt)
+char						*ft_convert_base(char *nbr, char *bf, char *bt)
 {
 	char				*ret;
 	unsigned long int	nb_dec;

@@ -6,7 +6,7 @@
 #    By: jubarbie <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/04/20 08:58:23 by jubarbie          #+#    #+#              #
-#    Updated: 2018/05/02 17:50:21 by jubarbie         ###   ########.fr        #
+#    Updated: 2018/05/04 20:03:49 by jubarbie         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,6 +16,7 @@ SRC=    main.c \
 		../Sources/malloc.c \
 		../Sources/block_getter.c \
 		../Sources/block_setter.c \
+		../Sources/block_setter2.c \
 		../Sources/block.c \
 		../Sources/block2.c \
 		../Sources/free.c \

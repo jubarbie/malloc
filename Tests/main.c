@@ -6,7 +6,7 @@
 /*   By: jubarbie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/28 14:34:34 by jubarbie          #+#    #+#             */
-/*   Updated: 2018/05/02 20:55:13 by jubarbie         ###   ########.fr       */
+/*   Updated: 2018/05/04 17:29:53 by jubarbie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,19 +120,16 @@ static void	test6()
 	p3 = malloc(324); 
 	p4 = malloc(34); 
 	free(p3);
-	show_alloc_mem();
 	free(p2);
-	show_alloc_mem();
 	free(p4);
-	show_alloc_mem();
 	p1 = malloc(1024 * 32); 
+	p2 = malloc(1024 * 1024); 
+	p3 = malloc(1024 * 1024 * 16); 
+	p4= malloc(1024 * 1024 * 128); 
+	free(p2);
 	free(p1);
-	p1 = malloc(1024 * 1024); 
-	free(p1);
-	p1 = malloc(1024 * 1024 * 16); 
-	free(p1);
-	p1 = malloc(1024 * 1024 * 128); 
-	free(p1);
+	free(p4);
+	free(p3);
 	show_alloc_mem();
 }
 

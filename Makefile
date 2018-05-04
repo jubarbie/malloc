@@ -6,7 +6,7 @@
 #    By: jubarbie <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/04/20 08:58:23 by jubarbie          #+#    #+#              #
-#    Updated: 2018/05/04 15:35:15 by jubarbie         ###   ########.fr        #
+#    Updated: 2018/05/04 20:00:08 by jubarbie         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,6 +15,7 @@ CFLAGS= -ILibs/libft -IIncludes -Wall -Wextra -Werror
 SRC=	Sources/malloc.c \
 		Sources/block_getter.c \
 		Sources/block_setter.c \
+		Sources/block_setter2.c \
 		Sources/block.c \
 		Sources/block2.c \
 		Sources/free.c \
@@ -33,7 +34,7 @@ $(NAME): $(OBJ)
 	@make -C Libs/libft
 	@echo " \033[32m[OK]\033[0m"
 	@echo "Creating libft_malloc \c"
-	@$(CC) -LLibs/libft -lft -shared -o $@ $^
+	@$(CC) -LLibs/libft -lft -lpthread -shared -o $@ $^
 	@ln -sf $(NAME) $(LINK)
 	@echo " \033[32m[OK]\033[0m"
 	

@@ -6,18 +6,16 @@
 /*   By: jubarbie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/25 11:34:51 by jubarbie          #+#    #+#             */
-/*   Updated: 2018/05/04 15:07:44 by jubarbie         ###   ########.fr       */
+/*   Updated: 2018/05/04 20:11:31 by jubarbie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "malloc.h"
-#include <stdio.h>
 
 static void		print_payload_line(t_block *p)
 {
 	if (p != NULL)
 	{
-		//printf("pf:%p - %p : %d octets\n", payload(p), (void *)((char *)payload(p) + get_b_size(p) - 1), (int)get_b_size(p));
 		print_addr(payload(p));
 		ft_putstr(" - ");
 		print_addr((void *)((char *)payload(p) + get_b_size(p) - 1));
@@ -36,28 +34,22 @@ static size_t	print_block(t_block *p)
 	size_t	s;
 
 	s = 0;
-	if (p != NULL)
+	if (p == NULL)
+		return (0);
+	if (g_mem.option & (1 << 1))
 	{
-		if (g_mem.option == 1)
-		{
-			(get_b_alloc(p) == 1) ? ft_putstr("\033[31m") : ft_putstr("\033[32m");
-			print_addr(p);
-			ft_putstr("\n\t<- ");
-			print_addr(get_b_prev(p));
-			ft_putstr("\n\t-> ");
-			print_addr(get_b_next(p));
-			ft_putstr("\n\t");
-		}
-		if (get_b_alloc(p) == 1)
-			s += get_b_size(p);
-		print_payload_line(p);
-		if (g_mem.option == 1)
-			ft_putstr("\033[0m");
+		(get_b_alloc(p) == 1) ? ft_putstr("\033[31m") : ft_putstr("\033[32m");
+		print_addr(p);
+		ft_putstr("\n\t<- ");
+		print_addr(get_b_prev(p));
+		ft_putstr("\n\t-> ");
+		print_addr(get_b_next(p));
+		ft_putstr("\n\t");
 	}
-	else
-	{
-		ft_putstr("PRINT BLOCK NULL");
-	}
+	if (get_b_alloc(p) == 1)
+		s += get_b_size(p);
+	print_payload_line(p);
+	ft_putstr("\033[0m");
 	return (s);
 }
 

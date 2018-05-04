@@ -6,19 +6,11 @@
 /*   By: jubarbie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/30 14:40:49 by jubarbie          #+#    #+#             */
-/*   Updated: 2018/05/02 19:33:39 by jubarbie         ###   ########.fr       */
+/*   Updated: 2018/05/04 19:58:39 by jubarbie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "block.h"
-
-t_block	*set_b_first(t_block *ptr)
-{
-	if (ptr == NULL)
-		return (NULL);
-	ptr->allocated |= (1 << 1);
-	return (ptr);
-}
 
 t_block	*set_b(t_block *ptr, size_t size, char alloc)
 {
