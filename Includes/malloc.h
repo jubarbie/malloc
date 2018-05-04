@@ -6,12 +6,12 @@
 /*   By: jubarbie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/20 08:18:56 by jubarbie          #+#    #+#             */
-/*   Updated: 2018/05/02 16:49:36 by jubarbie         ###   ########.fr       */
+/*   Updated: 2018/05/04 16:01:23 by jubarbie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MALLOC_H
-# define MALLOC_H
+#ifndef LIBFT_MALLOC_H
+# define LIBFT_MALLOC_H
 
 # include <stdio.h>
 # include <errno.h>

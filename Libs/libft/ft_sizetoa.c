@@ -6,12 +6,11 @@
 /*   By: jubarbie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/04 11:33:44 by jubarbie          #+#    #+#             */
-/*   Updated: 2018/05/04 15:02:43 by jubarbie         ###   ########.fr       */
+/*   Updated: 2018/05/04 16:00:02 by jubarbie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include <stdio.h>
 
 static unsigned long int	ft_power_long(unsigned long int n, int power)
 {
