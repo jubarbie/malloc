@@ -6,7 +6,7 @@
 /*   By: jubarbie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/24 11:12:10 by jubarbie          #+#    #+#             */
-/*   Updated: 2018/05/02 19:38:42 by jubarbie         ###   ########.fr       */
+/*   Updated: 2018/05/04 15:07:04 by jubarbie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ void	*payload(t_block *ptr)
 t_block	*split_block(t_block *start, size_t size)
 {
 	t_block	*new;
+	t_block	*next;
 
 	if (block_size(size) > get_b_size(start))
 		return (NULL);
@@ -74,8 +75,12 @@ t_block	*split_block(t_block *start, size_t size)
 	new = (t_block *)((char *)payload(start) + size);
 	set_b(new, get_b_size(start) - block_size(size), 0);
 	set_b(start, size, 1);
+	next = get_b_next(start);
 	set_b_next(start, new);
 	set_b_prev(new, start);
+	set_b_next(new, next);
+	if (next != NULL)
+		set_b_prev(get_b_next(next), new);
 	defragment(new);
 	return (start);
 }

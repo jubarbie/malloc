@@ -6,21 +6,21 @@
 /*   By: jubarbie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/20 08:36:03 by jubarbie          #+#    #+#             */
-/*   Updated: 2018/05/02 20:21:06 by jubarbie         ###   ########.fr       */
+/*   Updated: 2018/05/04 15:35:41 by jubarbie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "malloc.h"
 
 t_mem	g_mem = { .tiny = NULL, .small = NULL, .medium = NULL, .option = 0 };
-/*
-static char		get_options(void)
+
+/*static char		get_options(void)
 {
 	if (getenv("MallocVerbose") != NULL)
 		return (1);
 	return (0);
-}
-*/
+}*/
+
 static t_block	*malloc_in_mem(t_block *mem, size_t mem_size, size_t size)
 {
 	t_block	*block;
@@ -48,9 +48,14 @@ static t_block	*malloc_in_mem(t_block *mem, size_t mem_size, size_t size)
 
 static void		*init_mem(void **mem, size_t mem_size, size_t size)
 {
+	t_block	*b;
+
 	if (*mem == NULL)
 		*mem = (void *)new_room(mem_size, NULL, NULL);
-	return (payload(malloc_in_mem((t_block *)(*mem), mem_size, size)));
+	b = malloc_in_mem((t_block *)(*mem), mem_size, size);
+	if (b == NULL)
+		return (NULL);
+	return (payload(b));
 }
 
 void			*malloc(size_t size)
@@ -59,8 +64,7 @@ void			*malloc(size_t size)
 	if (size == 0)
 		return (NULL);
 	if (g_mem.option == 1)
-		g_mem.option = 1;
-		//printf("Mallocing %zu bytes\n", size);
+		printf("Mallocing %zu bytes\n", size);
 	if (size <= TINY_MAX)
 		return (init_mem(&(g_mem.tiny), TINY_SIZE, size));
 	else if (size <= SMALL_MAX)

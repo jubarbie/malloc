@@ -6,7 +6,7 @@
 /*   By: jubarbie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/25 12:00:26 by jubarbie          #+#    #+#             */
-/*   Updated: 2018/05/02 19:35:08 by jubarbie         ###   ########.fr       */
+/*   Updated: 2018/05/04 11:04:42 by jubarbie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,8 @@ t_block			*defragment(t_block *ptr);
 void			*payload(t_block *ptr);
 char			b_cont(t_block *b1, t_block *b2);
 t_block			*find_block(void *ptr);
-t_block			*find_block_in_mem(t_block *mem, t_block *block);
+t_block			*find_block_in_mem(t_block *mem, void *ptr);
 char			b_cont(t_block *b1, t_block *b2);
+void			print_addr(void *ptr);
 
 #endif

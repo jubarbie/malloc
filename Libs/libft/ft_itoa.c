@@ -6,7 +6,7 @@
 /*   By: jubarbie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/20 20:38:28 by jubarbie          #+#    #+#             */
-/*   Updated: 2018/05/02 21:21:44 by jubarbie         ###   ########.fr       */
+/*   Updated: 2018/05/04 11:42:30 by jubarbie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,9 @@ char			*ft_itoa(int n)
 	char	*str;
 
 	str = NULL;
-	len = (n <= 0) ? ft_nbrlen(n) + 1 : ft_nbrlen(n);
+	len = (n < 0) ? ft_nbrlen(n) + 1 : ft_nbrlen(n);
+	if (n == 0)
+		len = 1;
 	if (n == -2147483648)
 	{
 		str = ft_strnew(11);

@@ -6,13 +6,30 @@
 /*   By: jubarbie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/26 15:09:50 by jubarbie          #+#    #+#             */
-/*   Updated: 2018/05/02 16:53:18 by jubarbie         ###   ########.fr       */
+/*   Updated: 2018/05/04 14:09:28 by jubarbie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <stdio.h>
 
-static int	ft_nbrlen(int nb, int base)
+static unsigned long int	ft_power_long(unsigned long int n, int power)
+{
+	unsigned long int res;
+
+	res = n * n;
+	if (power < 0)
+		return (0);
+	if (power == 0)
+		return (1);
+	if (power == 1)
+		return (n);
+	if (power > 2)
+		res = n * (ft_power_long(n, --power));
+	return (res);
+}
+
+static int	ft_nbrlen(unsigned long int nb, int base)
 {
 	int i;
 
@@ -27,13 +44,13 @@ static int	ft_nbrlen(int nb, int base)
 	return (i);
 }
 
-static int	ft_to_dec(char *nbr, char *base)
+static unsigned long int	ft_to_dec(char *nbr, char *base)
 {
-	int nbr_dec;
-	int len_base;
-	int len_nbr;
-	int i;
-	int j;
+	unsigned long int	nbr_dec;
+	int					len_base;
+	int					len_nbr;
+	int					i;
+	int					j;
 
 	len_base = ft_strlen(base);
 	len_nbr = ft_strlen(nbr);
@@ -44,30 +61,30 @@ static int	ft_to_dec(char *nbr, char *base)
 		j = -1;
 		while (++j < len_base)
 			if (nbr[i] == base[j])
-				nbr_dec = nbr_dec + (j * ft_power(len_base, len_nbr - i - 1));
+				nbr_dec = nbr_dec + (j * ft_power_long(len_base, len_nbr - i - 1));
 	}
 	return (nbr_dec);
 }
 
-char		*ft_convert_base(char *nbr, char *base_from, char *base_to)
+char					*ft_convert_base(char *nbr, char *bf, char *bt)
 {
-	char	*ret;
-	int		nb_dec;
-	int		i;
-	int		b;
-	int		m;
+	char				*ret;
+	unsigned long int	nb_dec;
+	int					i;
+	int					b;
+	int					m;
 
-	nb_dec = ft_to_dec(nbr, base_from);
-	b = ft_strlen(base_to);
+	nb_dec = ft_to_dec(nbr, bf);
+	b = ft_strlen(bt);
 	i = ft_nbrlen(nb_dec, b);
-	if ((ret = (char*)malloc(sizeof(char) * i + 1)) == NULL)
+	ret = ft_strnew(i);
+	if (ret == NULL)
 		return (NULL);
 	while (--i >= 0)
 	{
 		m = nb_dec % b;
-		ret[i] = base_to[m];
+		ret[i] = bt[m];
 		nb_dec /= b;
 	}
-	ret[ft_nbrlen(ft_to_dec(nbr, base_from), b)] = '\0';
 	return (ret);
 }

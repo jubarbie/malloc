@@ -6,12 +6,12 @@
 #    By: jubarbie <jubarbie@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/10/30 16:51:35 by jubarbie          #+#    #+#              #
-#    Updated: 2018/05/02 17:01:33 by jubarbie         ###   ########.fr        #
+#    Updated: 2018/05/04 15:35:11 by jubarbie         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC=gcc
-CFLAGS= -I"../../Includes" -I"." -Wall -Wextra -Werror
+CFLAGS= -Wall -Wextra -Werror
 SRC=	ft_atoi.c \
 		ft_bzero.c \
 		ft_isalnum.c \
@@ -20,6 +20,7 @@ SRC=	ft_atoi.c \
 		ft_isdigit.c \
 		ft_isprint.c \
 		ft_itoa.c \
+		ft_sizetoa.c \
 		ft_memalloc.c \
 		ft_memccpy.c \
 		ft_memchr.c \
@@ -29,6 +30,7 @@ SRC=	ft_atoi.c \
 		ft_memmove.c \
 		ft_memset.c \
 		ft_power.c \
+		ft_ptoa.c \
 		ft_putchar.c \
 		ft_putchar_fd.c \
 		ft_putendl.c \
@@ -83,7 +85,6 @@ all: $(NAME)
 $(NAME): $(OBJ)
 	@ar rc $@ $^
 	@ranlib $@
-	@echo "libft created"
 	
 %.o: %.c
 	@$(CC) $(CFLAGS) -o $@ -c $<

@@ -6,7 +6,7 @@
 /*   By: jubarbie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/25 11:29:48 by jubarbie          #+#    #+#             */
-/*   Updated: 2018/05/02 19:50:41 by jubarbie         ###   ########.fr       */
+/*   Updated: 2018/05/04 11:10:05 by jubarbie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,11 +53,8 @@ t_block			*defragment(t_block *ptr)
 
 void			free(void *ptr)
 {
-	if (ptr != NULL)
+	if (ptr != NULL && find_block(ptr) != NULL)
 	{
-		if (g_mem.option == 1)
-			printf("freeing %p\n", ptr);
-
 		if (unalloc_block(ptr, (t_block *)g_mem.tiny) == NULL)
 			if (unalloc_block(ptr, (t_block *)g_mem.small) == NULL)
 				if (unalloc_block(ptr, (t_block *)g_mem.medium) == NULL)

@@ -6,7 +6,7 @@
 /*   By: jubarbie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/30 11:24:04 by jubarbie          #+#    #+#             */
-/*   Updated: 2018/05/02 16:49:25 by jubarbie         ###   ########.fr       */
+/*   Updated: 2018/05/04 11:09:22 by jubarbie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,6 @@ void			*realloc(void *ptr, size_t size)
 	t_block	*next;
 	size_t	s;
 
-	if (g_mem.option == 1)
-		ft_putendl("Rellocating");
 	if (ptr == NULL)
 		return (malloc(size));
 	block = find_block(ptr);

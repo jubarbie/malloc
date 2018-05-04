@@ -6,7 +6,7 @@
 #    By: jubarbie <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/04/20 08:58:23 by jubarbie          #+#    #+#              #
-#    Updated: 2018/05/02 18:05:51 by jubarbie         ###   ########.fr        #
+#    Updated: 2018/05/04 15:35:15 by jubarbie         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,10 +29,13 @@ LINK=libft_malloc.so
 .PHONY: clean fclean all re
 
 $(NAME): $(OBJ)
+	@echo "Creating libft \c"
 	@make -C Libs/libft
+	@echo " \033[32m[OK]\033[0m"
+	@echo "Creating libft_malloc \c"
 	@$(CC) -LLibs/libft -lft -shared -o $@ $^
 	@ln -sf $(NAME) $(LINK)
-	@echo 'libft_malloc created'
+	@echo " \033[32m[OK]\033[0m"
 	
 all: $(NAME)
 

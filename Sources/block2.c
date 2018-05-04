@@ -6,22 +6,22 @@
 /*   By: jubarbie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/01 18:34:16 by jubarbie          #+#    #+#             */
-/*   Updated: 2018/05/02 18:33:42 by jubarbie         ###   ########.fr       */
+/*   Updated: 2018/05/04 11:28:50 by jubarbie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "malloc.h"
 
-t_block	*find_block_in_mem(t_block *mem, t_block *block)
+t_block	*find_block_in_mem(t_block *mem, void *ptr)
 {
 	t_block *b;
 
-	if (mem == NULL || block == NULL)
+	if (mem == NULL || ptr == NULL)
 		return (NULL);
 	b = mem;
 	while (b != NULL)
 	{
-		if (b == block)
+		if ((void*)(b + 1) == ptr)
 			return (b);
 		b = get_b_next(b);
 	}
@@ -32,13 +32,12 @@ t_block	*find_block(void *ptr)
 {
 	if (ptr == NULL)
 		return (NULL);
-	ptr = (t_block *)((t_block *)ptr - 1);
-	if (find_block_in_mem(g_mem.tiny, ptr) == ptr)
-		return (ptr);
-	if (find_block_in_mem(g_mem.small, ptr) == ptr)
-		return (ptr);
-	if (find_block_in_mem(g_mem.medium, ptr) == ptr)
-		return (ptr);
+	if (find_block_in_mem(g_mem.tiny, ptr) != NULL)
+		return ((t_block *)ptr - 1);
+	if (find_block_in_mem(g_mem.small, ptr) != NULL)
+		return ((t_block *)ptr - 1);
+	if (find_block_in_mem(g_mem.medium, ptr) != NULL)
+		return ((t_block *)ptr - 1);
 	return (NULL);
 }
 
