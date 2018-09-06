@@ -6,7 +6,7 @@
 /*   By: jubarbie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/25 11:34:51 by jubarbie          #+#    #+#             */
-/*   Updated: 2018/05/04 20:11:31 by jubarbie         ###   ########.fr       */
+/*   Updated: 2018/09/06 15:03:02 by jubarbie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,13 @@ static size_t	print_block(t_block *p)
 	return (s);
 }
 
+static void		print_total(size_t nb)
+{
+	ft_putstr("Total : ");
+	ft_putulnbr(nb);
+	ft_putendl(" octets\n");
+}
+
 static size_t	print_mem(t_block *ptr, char *name)
 {
 	size_t	s;
@@ -69,6 +76,7 @@ static size_t	print_mem(t_block *ptr, char *name)
 		s += print_block(block);
 		block = get_b_next(block);
 	}
+	print_total(s);
 	return (s);
 }
 
@@ -92,7 +100,5 @@ void			show_alloc_mem(void)
 	s += print_mem(g_mem.tiny, "TINY");
 	s += print_mem(g_mem.small, "SMALL");
 	s += print_mem(g_mem.medium, "LARGE");
-	ft_putstr("Total : ");
-	ft_putulnbr(s);
-	ft_putendl(" octets\n");
+	print_total(s);
 }

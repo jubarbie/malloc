@@ -6,7 +6,7 @@
 /*   By: jubarbie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/20 08:36:03 by jubarbie          #+#    #+#             */
-/*   Updated: 2018/05/04 20:06:21 by jubarbie         ###   ########.fr       */
+/*   Updated: 2018/09/06 13:57:00 by jubarbie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static void		*init_mem(void **mem, size_t mem_size, size_t size)
 	return (payload(b));
 }
 
-static void		*dispatch_mem(size_t size)
+void			*dispatch_mem(size_t size)
 {
 	if (size == 0)
 		return (NULL);

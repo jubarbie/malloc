@@ -6,21 +6,19 @@
 /*   By: jubarbie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/24 11:12:10 by jubarbie          #+#    #+#             */
-/*   Updated: 2018/05/04 15:07:04 by jubarbie         ###   ########.fr       */
+/*   Updated: 2018/09/06 17:24:22 by jubarbie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "block.h"
-
-size_t		g_page_size;
+#include "malloc.h"
 
 t_block	*new_room(size_t size, t_block *prev, t_block *next)
 {
 	void	*p;
 	size_t	sz;
 
-	sz = block_size(size);
-	sz = (ALIGN(sz, getpagesize()));
+	sz = ALIGN(block_size(size), getpagesize());
 	p = mmap(NULL, sz, PROT_READ | PROT_WRITE, MAP_ANON | MAP_PRIVATE, -1, 0);
 	if (p == NULL)
 	{
@@ -80,7 +78,7 @@ t_block	*split_block(t_block *start, size_t size)
 	set_b_prev(new, start);
 	set_b_next(new, next);
 	if (next != NULL)
-		set_b_prev(get_b_next(next), new);
+		set_b_prev(next, new);
 	defragment(new);
 	return (start);
 }

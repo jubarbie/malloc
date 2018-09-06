@@ -6,17 +6,25 @@
 /*   By: jubarbie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/30 11:24:04 by jubarbie          #+#    #+#             */
-/*   Updated: 2018/05/04 19:57:02 by jubarbie         ###   ########.fr       */
+/*   Updated: 2018/09/06 13:56:22 by jubarbie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "malloc.h"
 
+static void		*mmalloc(size_t size)
+{
+	void	*addr;
+
+	addr = dispatch_mem(size);
+	return (addr);
+}
+
 static void		*new_alloc(t_block *old, size_t size)
 {
 	void	*new;
 
-	new = malloc(size);
+	new = mmalloc(size);
 	if (new == NULL)
 		return (NULL);
 	ft_memcpy(new, payload(old), get_b_size(old));
@@ -54,7 +62,7 @@ static void		*dispatch_realloc(void *ptr, size_t size)
 	size_t	s;
 
 	if (ptr == NULL)
-		return (malloc(size));
+		return (mmalloc(size));
 	block = find_block(ptr);
 	if (block == NULL)
 		return (NULL);

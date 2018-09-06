@@ -6,7 +6,7 @@
 /*   By: jubarbie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/25 12:00:26 by jubarbie          #+#    #+#             */
-/*   Updated: 2018/05/04 11:04:42 by jubarbie         ###   ########.fr       */
+/*   Updated: 2018/09/06 16:35:47 by jubarbie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 # define ALIGN(x,a) __ALIGN_MASK(x,(typeof(x))(a)-1)
 # define __ALIGN_MASK(x,mask) (((x)+(mask))&~(mask))
 
-# pragma pack(1)
+// # pragma pack(1)
 
 typedef struct	s_block {
 	size_t			size;
@@ -35,6 +35,7 @@ typedef struct	s_block {
 size_t			block_size(size_t size);
 char			get_b_alloc(t_block *ptr);
 size_t			get_b_size(t_block *ptr);
+void			*dispatch_mem(size_t size);
 t_block			*new_room(size_t size, t_block *prev, t_block *next);
 t_block			*set_b_size(t_block *ptr, size_t size);
 t_block			*set_b_next(t_block *ptr, t_block *next);

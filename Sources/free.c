@@ -6,7 +6,7 @@
 /*   By: jubarbie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/25 11:29:48 by jubarbie          #+#    #+#             */
-/*   Updated: 2018/05/04 20:05:42 by jubarbie         ###   ########.fr       */
+/*   Updated: 2018/09/06 17:21:12 by jubarbie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ static t_block	*unalloc_block(void *ptr, t_block *first)
 			}
 			set_b_alloc(block, 0);
 			return (defragment(block));
+			//return (block);
 		}
 		block = get_b_next(block);
 	}
@@ -51,20 +52,21 @@ static t_block	*unalloc_block(void *ptr, t_block *first)
 t_block			*defragment(t_block *ptr)
 {
 	size_t	size;
+	t_block	*nav;
 
-	while (get_b_prev(ptr) != NULL && get_b_alloc(get_b_prev(ptr)) == 0
-			&& get_b_first(ptr) == 0)
-		ptr = get_b_prev(ptr);
-	while (get_b_next(ptr) != NULL && get_b_alloc(get_b_next(ptr)) == 0
-			&& get_b_first(get_b_next(ptr)) == 0)
+	nav = ptr;
+	while (get_b_prev(nav) != NULL && !get_b_alloc(get_b_prev(nav))
+			&& !get_b_first(nav))
+		nav = get_b_prev(nav);
+	while (get_b_next(nav) != NULL && !get_b_alloc(get_b_next(nav))
+			&& !get_b_first(get_b_next(nav)))
 	{
-		size = get_b_size(ptr) + block_size(get_b_size(get_b_next(ptr)));
-		set_b_next(ptr, get_b_next(get_b_next(ptr)));
-		set_b(ptr, size, 0);
+		size = get_b_size(nav) + block_size(get_b_size(get_b_next(nav)));
+		set_b_next(nav, get_b_next(get_b_next(nav)));
+		set_b_prev(get_b_next(nav), nav);
+		set_b(nav, size, 0);
 	}
-	if (get_b_next(ptr) != NULL)
-		set_b_prev(get_b_next(ptr), ptr);
-	return (ptr);
+	return (nav);
 }
 
 void			free(void *ptr)
