@@ -16,11 +16,11 @@ static void		print_payload_line(t_block *p)
 {
 	if (p != NULL)
 	{
-		print_addr(payload(p));
+		print_addr(payload_addr(p));
 		ft_putstr(" - ");
-		print_addr((void *)((char *)payload(p) + get_b_size(p) - 1));
+		print_addr((void *)((char *)payload_addr(p) + get_b_size(p) - 1));
 		ft_putstr(" : ");
-		ft_putnbr((int)get_b_size(p));
+		ft_putulnbr(get_b_size(p));
 		ft_putendl(" octets");
 	}
 	else
@@ -36,9 +36,13 @@ static size_t	print_block(t_block *p)
 	s = 0;
 	if (p == NULL)
 		return (0);
-	if (g_mem.option & (1 << 1))
+	if (1)
 	{
-		(get_b_alloc(p) == 1) ? ft_putstr("\033[31m") : ft_putstr("\033[32m");
+		if (is_b_first(p))
+			ft_putstr(".");
+		else
+			ft_putstr(" ");
+		(is_b_alloc(p)) ? ft_putstr("\033[31m") : ft_putstr("\033[32m");
 		print_addr(p);
 		ft_putstr("\n\t<- ");
 		print_addr(get_b_prev(p));
@@ -46,7 +50,7 @@ static size_t	print_block(t_block *p)
 		print_addr(get_b_next(p));
 		ft_putstr("\n\t");
 	}
-	if (get_b_alloc(p) == 1)
+	if (is_b_alloc(p))
 		s += get_b_size(p);
 	print_payload_line(p);
 	ft_putstr("\033[0m");

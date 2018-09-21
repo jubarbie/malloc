@@ -19,13 +19,14 @@
 # include <string.h>
 # include <unistd.h>
 # include <pthread.h>
+# include <sys/resource.h>
 # include "libft.h"
 # include "block.h"
 
-# define TINY_SIZE 10240
-# define TINY_MAX 1024
-# define SMALL_SIZE 102400
-# define SMALL_MAX 10240
+# define TINY_SIZE 5440
+# define TINY_MAX 512
+# define SMALL_SIZE 20800
+# define SMALL_MAX 2048
 
 typedef struct	s_mem {
 	void	*tiny;
@@ -40,6 +41,7 @@ pthread_mutex_t	g_mutex;
 extern void		*malloc(size_t size);
 extern void		free(void *ptr);
 extern void		*realloc(void *ptr, size_t size);
+extern void 	*calloc(size_t nmemb, size_t size);
 extern void		show_alloc_mem();
 
 #endif

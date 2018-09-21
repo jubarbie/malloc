@@ -15,8 +15,8 @@
 char	get_b_first(t_block *ptr)
 {
 	if (ptr == NULL)
-		return (-1);
-	if (ptr->allocated & (1 << 1))
+		return (0);
+	if (ptr->status & (1 << 2))
 		return (1);
 	return (0);
 }
@@ -24,8 +24,8 @@ char	get_b_first(t_block *ptr)
 char	get_b_alloc(t_block *ptr)
 {
 	if (ptr == NULL)
-		return (-1);
-	if (ptr->allocated & (1 << 0))
+		return (0);
+	if (ptr->status & (1 << 3))
 		return (1);
 	return (0);
 }

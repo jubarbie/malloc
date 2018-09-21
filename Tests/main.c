@@ -12,100 +12,101 @@
 
 #include "malloc.h"
 
-#define M (1024 * 1024) 
+#define M (1024 * 1024)
 
 static void	test0()
 {
-	int i; 
+	int i;
 
-	i = 0; 
-	while (i < 1024) 
-	{ 
-		i++; 
-	} 
+	i = 0;
+	while (i < 1024)
+	{
+		i++;
+	}
 }
 
 static void  test1()
 {
-	int i; 
-	char *addr; 
+	int i;
+	char *addr;
 
-	i = 0; 
-	while (i < 1024) 
-	{ 
-		addr = (char*)malloc(1024); 
-		addr[0] = 42; 
-		i++; 
-	} 
+	i = 0;
+	while (i < 10)
+	{
+		addr = (char*)malloc(512);
+		addr[0] = 42;
+		i++;
+	}
+	show_alloc_mem();
 }
 
 static void	test2()
 {
-	int i; 
-	char *addr; 
+	int i;
+	char *addr;
 
-	i = 0; 
-	while (i < 1024) 
-	{ 
+	i = 0;
+	while (i < 1024)
+	{
 		addr = (char*)malloc(1024);
-		addr[0] = 42; 
-		free(addr); 
-		i++; 
-	} 
+		addr[0] = 42;
+		free(addr);
+		i++;
+	}
 }
 
-static void print(char *s) 
-{ 
-	write(1, s, strlen(s)); 
+static void print(char *s)
+{
+	write(1, s, strlen(s));
 }
 
-static void	test3() 
-{ 
-	char *addr1; 
-	char *addr3; 
+static void	test3()
+{
+	char *addr1;
+	char *addr3;
 
-	addr1 = (char*)malloc(16*M); 
-	strcpy(addr1, "Bonjours\n"); 
-	print(addr1); 
-	addr3 = (char*)realloc(addr1, 128*M); 
-	addr3[127*M] = 42; 
-	print(addr3); 
+	addr1 = (char*)malloc(16*M);
+	strcpy(addr1, "Bonjours\n");
+	print(addr1);
+	addr3 = (char*)realloc(addr1, 128*M);
+	addr3[127*M] = 42;
+	print(addr3);
 }
 
 static void test3b()
 {
-	char *addr1; 
-	char *addr2; 
-	char *addr3; 
+	char *addr1;
+	char *addr2;
+	char *addr3;
 
-	addr1 = (char*)malloc(16*M); 
-	strcpy(addr1, "Bonjours\n"); 
-	print(addr1); 
-	addr2 = (char*)malloc(16*M); 
-	addr3 = (char*)realloc(addr1, 128*M); 
-	addr3[127*M] = 42; 
-	print(addr3); 
+	addr1 = (char*)malloc(16*M);
+	strcpy(addr1, "Bonjours\n");
+	print(addr1);
+	addr2 = (char*)malloc(16*M);
+	addr3 = (char*)realloc(addr1, 128*M);
+	addr3[127*M] = 42;
+	print(addr3);
 }
 
 static void test4()
 {
-	char *addr; 
+	char *addr;
 
-	addr = malloc(16); 
-	free(NULL); 
-	free((void *)addr + 5); 
-	if (realloc((void *)addr + 5, 10) == NULL) 
-		print("Bonjours\n"); 
+	addr = malloc(16);
+	free(NULL);
+	free((void *)addr + 5);
+	if (realloc((void *)addr + 5, 10) == NULL)
+		print("Bonjours\n");
 }
 
 static void	test5()
 {
 	void	*p;
-	p = malloc(1024); 
-	p = malloc(1024 * 32); 
-	p = malloc(1024 * 1024); 
-	p = malloc(1024 * 1024 * 16); 
-	p = malloc(1024 * 1024 * 128); 
+	p = malloc(1024);
+	p = malloc(1024 * 32);
+	p = malloc(1024 * 1024);
+	p = malloc(1024 * 1024 * 16);
+	p = malloc(1024 * 1024 * 128);
 	show_alloc_mem();
 }
 
@@ -115,21 +116,26 @@ static void	test6()
 	void	*p2;
 	void	*p3;
 	void	*p4;
-	p1 = malloc(1024); 
-	p2 = malloc(24); 
-	p3 = malloc(324); 
-	p4 = malloc(34); 
-	free(p3);
+	void	*p5;
+	void	*p6;
+	void	*p7;
+	void	*p8;
+	void	*p9;
+	void 	*p10;
+	size_t	sz, pz;
+
+	p1 = malloc(1);
+	p2 = malloc(10);
+	p3 = malloc(100);
+	p4 = malloc(200);
+	p5 = malloc(500);
+	p6 = malloc(512);
+	p7 = malloc(1024);
+	p8 = malloc(2048);
 	free(p2);
-	free(p4);
-	p1 = malloc(1024 * 32); 
-	p2 = malloc(1024 * 1024); 
-	p3 = malloc(1024 * 1024 * 16); 
-	p4= malloc(1024 * 1024 * 128); 
-	free(p2);
-	free(p1);
-	free(p4);
-	free(p3);
+	show_alloc_mem();
+	p9 = realloc(p8, 40000);
+	p10 = realloc(p6, 520);
 	show_alloc_mem();
 }
 

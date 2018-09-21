@@ -12,12 +12,11 @@
 
 #include "block.h"
 
-t_block	*set_b(t_block *ptr, size_t size, char alloc)
+t_block	*set_b_size(t_block *ptr, size_t size)
 {
 	if (ptr == NULL)
 		return (NULL);
-	set_b_size(ptr, size);
-	set_b_alloc(ptr, alloc);
+	ptr->size = size;
 	return (ptr);
 }
 
@@ -37,21 +36,16 @@ t_block	*set_b_prev(t_block *ptr, t_block *prev)
 	return (ptr);
 }
 
-t_block	*set_b_alloc(t_block *ptr, char alloc)
+t_block	*set_b_all(t_block *ptr, size_t s, char first, char alloc)
 {
 	if (ptr == NULL)
 		return (NULL);
-	if (alloc == 1)
-		ptr->allocated |= (1 << 0);
+	ptr = set_b_size(ptr, s);
+	if (alloc)
+		ptr = set_b_alloc(ptr);
 	else
-		ptr->allocated &= ~(1 << 0);
-	return (ptr);
-}
-
-t_block	*set_b_size(t_block *ptr, size_t size)
-{
-	if (ptr == NULL)
-		return (NULL);
-	ptr->size = size;
+		ptr = set_b_free(ptr);
+	if (first)
+		ptr = set_b_first(ptr);
 	return (ptr);
 }

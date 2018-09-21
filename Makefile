@@ -11,15 +11,16 @@
 # **************************************************************************** #
 
 CC=gcc
-CFLAGS= -ILibs/libft -IIncludes -Wall -Wextra -Werror 
+CFLAGS= -ILibs/libft -IIncludes -Wall -Wextra -Werror
 SRC=	Sources/malloc.c \
 		Sources/block_getter.c \
 		Sources/block_setter.c \
-		Sources/block_setter2.c \
-		Sources/block.c \
-		Sources/block2.c \
+		Sources/block_helper.c \
+		Sources/block_list.c \
+		Sources/block_status.c \
 		Sources/free.c \
 		Sources/realloc.c \
+		Sources/calloc.c \
 		Sources/show_alloc_mem.c
 OBJ=$(SRC:.c=.o)
 ifeq ($(HOSTTYPE),)
@@ -37,7 +38,7 @@ $(NAME): $(OBJ)
 	@$(CC) -LLibs/libft -lft -lpthread -shared -o $@ $^
 	@ln -sf $(NAME) $(LINK)
 	@echo " \033[32m[OK]\033[0m"
-	
+
 all: $(NAME)
 
 %.o: %.c

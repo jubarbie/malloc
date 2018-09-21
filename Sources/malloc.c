@@ -14,10 +14,19 @@
 
 t_mem	g_mem = { .tiny = NULL, .small = NULL, .medium = NULL, .option = 0 };
 
-static void		get_options(void)
+t_block	*new_room(size_t size, t_block *prev, t_block *next)
 {
-	if (getenv("MallocVerbose") != NULL)
-		g_mem.option |= (1 << 1);
+	void	*b;
+	size_t	bsize;
+
+	bsize = block_size(size);
+	b = mmap(NULL, bsize, PROT_READ | PROT_WRITE, MAP_ANON | MAP_PRIVATE, -1, 0);
+	if (b == NULL)
+		return (NULL);
+	b = init_block(b);
+	set_b_all(b, size, 1, 0);
+	attach_block(b, prev, next);
+	return (b);
 }
 
 static t_block	*malloc_in_mem(t_block *mem, size_t mem_size, size_t size)
@@ -29,9 +38,9 @@ static t_block	*malloc_in_mem(t_block *mem, size_t mem_size, size_t size)
 	prev = block;
 	while (block != NULL)
 	{
-		if (get_b_alloc(block) == 0 && size == get_b_size(block))
-			return (set_b_alloc(block, 1));
-		if (get_b_alloc(block) == 0 && block_size(size) <= get_b_size(block))
+		if (!is_b_alloc(block) && size == get_b_size(block))
+			return (set_b_alloc(block));
+		if (!is_b_alloc(block) && block_size(size) <= get_b_size(block))
 			return (split_block(block, size));
 		prev = block;
 		block = get_b_next(block);
@@ -40,12 +49,16 @@ static t_block	*malloc_in_mem(t_block *mem, size_t mem_size, size_t size)
 	{
 		block = new_room(mem_size, prev, NULL);
 		if (size == get_b_size(block))
-			return (set_b_alloc(block, 1));
+			return (set_b_alloc(block));
 	}
 	return (split_block(block, size));
 }
 
-static void		*init_mem(void **mem, size_t mem_size, size_t size)
+/*
+** Initialize memory by creating a new room
+** Allocate the memory
+*/
+static void		*init_and_alloc(void **mem, size_t mem_size, size_t size)
 {
 	t_block	*b;
 
@@ -54,30 +67,32 @@ static void		*init_mem(void **mem, size_t mem_size, size_t size)
 	b = malloc_in_mem((t_block *)(*mem), mem_size, size);
 	if (b == NULL)
 		return (NULL);
-	return (payload(b));
+	return (b);
 }
-
-void			*dispatch_mem(size_t size)
+ /*
+ ** Return the appropriate memory address
+ */
+void			*dispatch_alloc(size_t size)
 {
-	if (size == 0)
-		return (NULL);
-	if (size <= TINY_MAX)
-		return (init_mem(&(g_mem.tiny), TINY_SIZE, size));
-	else if (size <= SMALL_MAX)
-		return (init_mem(&(g_mem.small), SMALL_SIZE, size));
+	size_t	alsize;
+
+	alsize = ALIGN(size, 16);
+	if (alsize <= TINY_MAX)
+		return (init_and_alloc(&(g_mem.tiny), TINY_SIZE, alsize));
+	else if (alsize <= SMALL_MAX)
+		return (init_and_alloc(&(g_mem.small), SMALL_SIZE, alsize));
 	else
-		return (init_mem(&(g_mem.medium), size, size));
+		return (init_and_alloc(&(g_mem.medium), alsize, alsize));
 }
 
 void			*malloc(size_t size)
 {
-	void	*addr;
+	void	*block;
 
-	if (!(g_mem.option & (1 << 0)))
-		get_options();
+	if (size == 0)
+		return (NULL);
 	pthread_mutex_lock(&g_mutex);
-	addr = dispatch_mem(size);
+	block = dispatch_alloc(size);
 	pthread_mutex_unlock(&g_mutex);
-	g_mem.option |= (1 << 0);
-	return (addr);
+	return (payload_addr(block));
 }
