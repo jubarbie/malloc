@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "malloc.h"
+#include "libft_malloc.h"
 
 static size_t	min_size(size_t s1, size_t s2)
 {
@@ -36,18 +36,16 @@ static t_block	*grow_block(t_block *block, t_block *next, size_t size)
 	t_block	*new;
 	size_t	s;
 
+	if (!b_cont(block, next) || is_b_first(next))
+	{
+		ft_putendl("grow not cont");
+		return (NULL);
+	}
 	s = block_size(get_b_size(next)) + get_b_size(block);
 	set_b_size(block, size);
 	new = init_block((void *)((char *)payload_addr(block) + size));
 	set_b_size(new, s - block_size(size));
 	attach_block(new, block, get_b_next(next));
-	return (block);
-}
-
-static t_block	*fusion_blocks(t_block *block, t_block *next)
-{
-	set_b_size(block, block_size(get_b_size(next)) + get_b_size(block));
-	attach_block(block, get_b_prev(block), get_b_next(next));
 	return (block);
 }
 
@@ -69,7 +67,7 @@ static void		*dispatch_realloc(void *ptr, size_t size)
 	if (get_b_size(block) > block_size(alsize))
 		return (split_block(block, alsize));
 	next = get_b_next(block);
-	if (next == NULL || is_b_alloc(next) || is_b_first(next))
+	if (!b_cont(block, next) || is_b_alloc(next) || is_b_first(next))
 		return (new_alloc(block, alsize));
 	s = get_b_size(next) + get_b_size(block);
 	if (alsize > block_size(s))

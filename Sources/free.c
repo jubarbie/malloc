@@ -10,14 +10,41 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "malloc.h"
+#include "libft_malloc.h"
+
+static t_block	*remove_room(t_block *b, t_block *prev, t_block *next)
+{
+	if (prev == NULL)
+	{
+		if (b == g_mem.tiny)
+			g_mem.tiny = next;
+		if (b == g_mem.small)
+			g_mem.small = next;
+		if (b == g_mem.medium)
+			g_mem.medium = next;
+		set_b_prev(next, NULL);
+	}
+	else
+		attach_block(prev, get_b_prev(prev), next);
+	munmap((void *)b, block_size(get_b_size(b)));
+	return (prev);
+}
 
 static t_block	*unalloc_block(t_block *b)
 {
+	t_block	*next;
+	t_block	*prev;
+
 	if (b == NULL)
 	 	return (NULL);
 	if (is_b_alloc(b))
 		set_b_free(b);
+	next = get_b_next(b);
+	prev = get_b_prev(b);
+	if (is_b_first(b) && (next == NULL || is_b_first(next)))
+		return (remove_room(b, prev, next));
+	if (!getenv("MALLOC_NO_DEFRAG") || ft_strcmp(getenv("MALLOC_NO_DEFRAG"), "y"))
+		b = defrag_prev(defrag_next(b));
 	return (b);
 }
 
@@ -28,8 +55,7 @@ void pthsafe_free(void *ptr)
 	b = (t_block *)ptr;
 	b = find_block(ptr);
 	if (b != NULL)
-		if (unalloc_block(b) == NULL)
-			ft_putendl("Trying to free block that was not allocated");
+		unalloc_block(b);
 }
 
 void			free(void *ptr)

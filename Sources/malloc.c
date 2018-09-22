@@ -10,9 +10,10 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "malloc.h"
+#include "libft_malloc.h"
 
-t_mem	g_mem = { .tiny = NULL, .small = NULL, .medium = NULL, .option = 0 };
+static	pthread_mutex_t	g_mutex = PTHREAD_MUTEX_INITIALIZER;
+t_mem	g_mem = { .tiny = NULL, .small = NULL, .medium = NULL };
 
 t_block	*new_room(size_t size, t_block *prev, t_block *next)
 {
@@ -69,9 +70,10 @@ static void		*init_and_alloc(void **mem, size_t mem_size, size_t size)
 		return (NULL);
 	return (b);
 }
- /*
- ** Return the appropriate memory address
- */
+
+/*
+** Allocate memory in the appropriate memory zone
+*/
 void			*dispatch_alloc(size_t size)
 {
 	size_t	alsize;

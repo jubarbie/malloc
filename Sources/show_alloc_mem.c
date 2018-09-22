@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "malloc.h"
+#include "libft_malloc.h"
 
 static void		print_payload_line(t_block *p)
 {
@@ -36,7 +36,7 @@ static size_t	print_block(t_block *p)
 	s = 0;
 	if (p == NULL)
 		return (0);
-	if (1)
+	if (getenv("MALLOC_DETAILS"))
 	{
 		if (is_b_first(p))
 			ft_putstr(".");
@@ -50,10 +50,10 @@ static size_t	print_block(t_block *p)
 		print_addr(get_b_next(p));
 		ft_putstr("\n\t");
 	}
-	if (is_b_alloc(p))
-		s += get_b_size(p);
-	print_payload_line(p);
+	if (is_b_alloc(p) || getenv("MALLOC_DETAILS"))
+		print_payload_line(p);
 	ft_putstr("\033[0m");
+	s += (is_b_alloc(p)) ? get_b_size(p) : 0;
 	return (s);
 }
 
