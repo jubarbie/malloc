@@ -1,0 +1,7 @@
+LIBFT_MALLOC_1.0 {
+  global:
+    malloc;
+    
+  local:
+    *;
+};
