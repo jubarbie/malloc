@@ -19,6 +19,7 @@ SRC=	Sources/malloc.c		\
 		Sources/block_list.c	\
 		Sources/block_status.c	\
 		Sources/defragment.c	\
+		Sources/align.c			\
 		Sources/free.c			\
 		Sources/realloc.c		\
 		Sources/calloc.c		\
@@ -36,7 +37,7 @@ $(NAME): $(OBJ)
 	@make -C Libs/libft
 	@echo " \033[32m[OK]\033[0m"
 	@echo "Creating libft_malloc \c"
-	@$(CC) -LLibs/libft -lft -lpthread -shared -o $@ $^ -WL,--version-script=libft_malloc.map
+	@$(CC) -LLibs/libft -lft -lpthread -shared -o $@ $^
 	@ln -sf $(NAME) $(LINK)
 	@echo " \033[32m[OK]\033[0m"
 

@@ -16,7 +16,7 @@ void        *calloc(size_t nmemb, size_t size)
         return (NULL);
     if (is_overflowing(nmemb, size, alsize))
         return (NULL);
-    alsize = ALIGN(alsize, 16);
+    alsize = align_16(alsize);
     pthread_mutex_lock(&g_mutex);
 	block = dispatch_alloc(alsize);
     ft_bzero(payload_addr(block), alsize);

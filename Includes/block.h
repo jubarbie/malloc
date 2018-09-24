@@ -23,8 +23,6 @@
 # define ALIGN(x,a) __ALIGN_MASK(x,(typeof(x))(a)-1)
 # define __ALIGN_MASK(x,mask) (((x)+(mask))&~(mask))
 
-# pragma GCC visibility push(hidden)
-
 typedef struct	s_block {
 	size_t			size;
 	struct s_block	*next;
@@ -80,5 +78,7 @@ t_block			*defrag_prev(t_block *b);
 
 /* Show allocation memory */
 void			print_addr(void *ptr);
+
+size_t			align_16(size_t nbr);
 
 #endif

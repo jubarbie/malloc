@@ -20,12 +20,12 @@ t_block	*new_room(size_t size, t_block *prev, t_block *next)
 	void	*b;
 	size_t	bsize;
 
-	bsize = block_size(size);
+	bsize = ALIGN(block_size(size), getpagesize());
 	b = mmap(NULL, bsize, PROT_READ | PROT_WRITE, MAP_ANON | MAP_PRIVATE, -1, 0);
 	if (b == NULL)
 		return (NULL);
 	b = init_block(b);
-	set_b_all(b, size, 1, 0);
+	set_b_all(b, bsize - sizeof(t_block), 1, 0);
 	attach_block(b, prev, next);
 	return (b);
 }
@@ -78,7 +78,7 @@ void			*dispatch_alloc(size_t size)
 {
 	size_t	alsize;
 
-	alsize = ALIGN(size, 16);
+	alsize = align_16(size);
 	if (alsize <= TINY_MAX)
 		return (init_and_alloc(&(g_mem.tiny), TINY_SIZE, alsize));
 	else if (alsize <= SMALL_MAX)

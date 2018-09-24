@@ -56,7 +56,7 @@ static void		*dispatch_realloc(void *ptr, size_t size)
 	size_t	alsize;
 	size_t	s;
 
-	alsize = ALIGN(size, 16);
+	alsize = align_16(size);
 	block = find_block(ptr);
 	if (block == NULL)
 		return (NULL);
