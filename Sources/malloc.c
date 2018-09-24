@@ -6,14 +6,14 @@
 /*   By: jubarbie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/20 08:36:03 by jubarbie          #+#    #+#             */
-/*   Updated: 2018/09/06 13:57:00 by jubarbie         ###   ########.fr       */
+/*   Updated: 2018/09/24 21:39:16 by jubarbie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft_malloc.h"
 
-static	pthread_mutex_t	g_mutex = PTHREAD_MUTEX_INITIALIZER;
-t_mem	g_mem = { .tiny = NULL, .small = NULL, .medium = NULL };
+t_mem 			g_mem = { .tiny = NULL, .small = NULL, .medium = NULL };
+static pthread_mutex_t	g_mutex = PTHREAD_MUTEX_INITIALIZER;
 
 t_block	*new_room(size_t size, t_block *prev, t_block *next)
 {
@@ -21,12 +21,14 @@ t_block	*new_room(size_t size, t_block *prev, t_block *next)
 	size_t	bsize;
 
 	bsize = ALIGN(block_size(size), getpagesize());
+	debug_new_room(bsize);
 	b = mmap(NULL, bsize, PROT_READ | PROT_WRITE, MAP_ANON | MAP_PRIVATE, -1, 0);
 	if (b == NULL)
 		return (NULL);
 	b = init_block(b);
 	set_b_all(b, bsize - sizeof(t_block), 1, 0);
 	attach_block(b, prev, next);
+	debug_return(b);
 	return (b);
 }
 
@@ -79,10 +81,10 @@ void			*dispatch_alloc(size_t size)
 	size_t	alsize;
 
 	alsize = align_16(size);
-	if (alsize <= TINY_MAX)
-		return (init_and_alloc(&(g_mem.tiny), TINY_SIZE, alsize));
-	else if (alsize <= SMALL_MAX)
-		return (init_and_alloc(&(g_mem.small), SMALL_SIZE, alsize));
+	if (alsize <= TINY)
+		return (init_and_alloc(&(g_mem.tiny), block_size(TINY) * 10, alsize));
+	else if (alsize <= SMALL)
+		return (init_and_alloc(&(g_mem.small), block_size(SMALL) * 10, alsize));
 	else
 		return (init_and_alloc(&(g_mem.medium), alsize, alsize));
 }
@@ -91,10 +93,12 @@ void			*malloc(size_t size)
 {
 	void	*block;
 
+	pthread_mutex_lock(&g_mutex);
+	debug_malloc(size);
 	if (size == 0)
 		return (NULL);
-	pthread_mutex_lock(&g_mutex);
 	block = dispatch_alloc(size);
+	debug_return(block);
 	pthread_mutex_unlock(&g_mutex);
 	return (payload_addr(block));
 }

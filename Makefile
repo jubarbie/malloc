@@ -6,7 +6,7 @@
 #    By: jubarbie <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/04/20 08:58:23 by jubarbie          #+#    #+#              #
-#    Updated: 2018/05/16 12:09:08 by jubarbie         ###   ########.fr        #
+#    Updated: 2018/09/24 20:36:20 by jubarbie         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,11 +19,14 @@ SRC=	Sources/malloc.c		\
 		Sources/block_list.c	\
 		Sources/block_status.c	\
 		Sources/defragment.c	\
+		Sources/hex_dump.c		\
 		Sources/align.c			\
 		Sources/free.c			\
 		Sources/realloc.c		\
 		Sources/calloc.c		\
-		Sources/show_alloc_mem.c
+		Sources/show_alloc_mem.c\
+		Sources/print_helper.c	\
+		Sources/debug.c
 OBJ=$(SRC:.c=.o)
 ifeq ($(HOSTTYPE),)
 HOSTTYPE := $(shell uname -m)_$(shell uname -s)

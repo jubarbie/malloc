@@ -6,7 +6,7 @@
 /*   By: jubarbie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/25 11:29:48 by jubarbie          #+#    #+#             */
-/*   Updated: 2018/09/06 17:21:12 by jubarbie         ###   ########.fr       */
+/*   Updated: 2018/09/24 21:39:49 by jubarbie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,15 +52,22 @@ void pthsafe_free(void *ptr)
 {
 	t_block	*b;
 
-	b = (t_block *)ptr;
-	b = find_block(ptr);
-	if (b != NULL)
-		unalloc_block(b);
+	if (ptr)
+	{
+		b = (t_block *)ptr;
+		b = find_block(ptr);
+		if (b != NULL)
+			unalloc_block(b);
+	}
+	else
+		ft_putstr("Trying to free block that was not allocated\n");
 }
 
 void			free(void *ptr)
 {
 	pthread_mutex_lock(&g_mutex);
-	pthsafe_free(ptr);
+	debug_free(ptr);
+	if (ptr)
+		pthsafe_free(ptr);
 	pthread_mutex_unlock(&g_mutex);
 }

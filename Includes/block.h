@@ -6,7 +6,7 @@
 /*   By: jubarbie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/25 12:00:26 by jubarbie          #+#    #+#             */
-/*   Updated: 2018/09/06 16:35:47 by jubarbie         ###   ########.fr       */
+/*   Updated: 2018/09/24 21:31:22 by jubarbie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,17 @@ t_block			*defrag_prev(t_block *b);
 
 /* Show allocation memory */
 void			print_addr(void *ptr);
+void			print_size(size_t size);
+void			print_hex_dump(t_block *b);
 
 size_t			align_16(size_t nbr);
+
+/* Debug */
+void			debug_free(void *ptr);
+void			debug_realloc(void *ptr, size_t size);
+void			debug_calloc(size_t nb, size_t size);
+void			debug_malloc(size_t size);
+void			debug_new_room(size_t size);
+void			debug_return(t_block *ptr);
 
 #endif

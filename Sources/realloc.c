@@ -6,7 +6,7 @@
 /*   By: jubarbie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/30 11:24:04 by jubarbie          #+#    #+#             */
-/*   Updated: 2018/09/06 13:56:22 by jubarbie         ###   ########.fr       */
+/*   Updated: 2018/09/24 21:38:55 by jubarbie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,7 @@ void			*realloc(void *ptr, size_t size)
 	void	*block;
 
 	pthread_mutex_lock(&g_mutex);
+	debug_realloc(ptr, size);
 	if (ptr == NULL)
 		return (payload_addr(dispatch_alloc(size)));
 	if (ptr != NULL && size == 0)
@@ -90,6 +91,7 @@ void			*realloc(void *ptr, size_t size)
 		return (NULL);
 	}
 	block = dispatch_realloc(ptr, size);
+	debug_return(block);
 	pthread_mutex_unlock(&g_mutex);
 	return (payload_addr(block));
 }
