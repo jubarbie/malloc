@@ -13,7 +13,6 @@
 #include "libft_malloc.h"
 
 t_mem 			g_mem = { .tiny = NULL, .small = NULL, .medium = NULL };
-static pthread_mutex_t	g_mutex = PTHREAD_MUTEX_INITIALIZER;
 
 t_block	*new_room(size_t size, t_block *prev, t_block *next)
 {
@@ -21,14 +20,12 @@ t_block	*new_room(size_t size, t_block *prev, t_block *next)
 	size_t	bsize;
 
 	bsize = ALIGN(block_size(size), getpagesize());
-	debug_new_room(bsize);
 	b = mmap(NULL, bsize, PROT_READ | PROT_WRITE, MAP_ANON | MAP_PRIVATE, -1, 0);
 	if (b == NULL)
 		return (NULL);
 	b = init_block(b);
 	set_b_all(b, bsize - sizeof(t_block), 1, 0);
 	attach_block(b, prev, next);
-	debug_return(b);
 	return (b);
 }
 
@@ -41,9 +38,9 @@ static t_block	*malloc_in_mem(t_block *mem, size_t mem_size, size_t size)
 	prev = block;
 	while (block != NULL)
 	{
-		if (!is_b_alloc(block) && size == get_b_size(block))
+		if (is_allocable(block, size))
 			return (set_b_alloc(block));
-		if (!is_b_alloc(block) && block_size(size) <= get_b_size(block))
+		if (is_splittable(block, size))
 			return (split_block(block, size));
 		prev = block;
 		block = get_b_next(block);
@@ -61,7 +58,7 @@ static t_block	*malloc_in_mem(t_block *mem, size_t mem_size, size_t size)
 ** Initialize memory by creating a new room
 ** Allocate the memory
 */
-static void		*init_and_alloc(void **mem, size_t mem_size, size_t size)
+static t_block		*init_and_alloc(void **mem, size_t mem_size, size_t size)
 {
 	t_block	*b;
 
@@ -76,11 +73,13 @@ static void		*init_and_alloc(void **mem, size_t mem_size, size_t size)
 /*
 ** Allocate memory in the appropriate memory zone
 */
-void			*dispatch_alloc(size_t size)
+t_block			*dispatch_alloc(size_t size)
 {
 	size_t	alsize;
 
 	alsize = align_16(size);
+	if (alsize == 0)
+		return (NULL);
 	if (alsize <= TINY)
 		return (init_and_alloc(&(g_mem.tiny), block_size(TINY) * 10, alsize));
 	else if (alsize <= SMALL)
@@ -91,14 +90,16 @@ void			*dispatch_alloc(size_t size)
 
 void			*malloc(size_t size)
 {
-	void	*block;
+	t_block	*block;
+	void 	*ptr;
 
-	pthread_mutex_lock(&g_mutex);
-	debug_malloc(size);
 	if (size == 0)
 		return (NULL);
+	pthread_mutex_lock(&g_mutex);
 	block = dispatch_alloc(size);
-	debug_return(block);
+	ptr = payload_addr(block);
 	pthread_mutex_unlock(&g_mutex);
-	return (payload_addr(block));
+	if (ptr == NULL)
+		errno = ENOMEM;
+	return (ptr);
 }

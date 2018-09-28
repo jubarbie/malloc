@@ -13,15 +13,21 @@
 CC=gcc
 CFLAGS= -I"../Libs/libft" -I"../Includes"
 SRC=    main.c \
-		../Sources/malloc.c \
-		../Sources/block_getter.c \
-		../Sources/block_setter.c \
-		../Sources/block_helper.c \
-		../Sources/block_list.c \
-		../Sources/block_status.c \
-		../Sources/free.c \
-		../Sources/realloc.c \
-		../Sources/show_alloc_mem.c
+		../Sources/malloc.c		\
+		../Sources/block_getter.c	\
+		../Sources/block_setter.c	\
+		../Sources/block_helper.c	\
+		../Sources/block_list.c	\
+		../Sources/block_status.c	\
+		../Sources/defragment.c	\
+		../Sources/hex_dump.c		\
+		../Sources/align.c			\
+		../Sources/free.c			\
+		../Sources/realloc.c		\
+		../Sources/calloc.c		\
+		../Sources/show_alloc_mem.c\
+		../Sources/print_helper.c	\
+		../Sources/debug.c
 OBJ=$(SRC:.c=.o)
 NAME=malloc
 .PHONY: clean fclean all re

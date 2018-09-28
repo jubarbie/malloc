@@ -21,18 +21,21 @@ static char is_overflowing(size_t n1, size_t n2, size_t res)
 void        *calloc(size_t nmemb, size_t size)
 {
     t_block *block;
+    void    *ptr;
     size_t  alsize;
 
-    pthread_mutex_lock(&g_mutex);
-	debug_calloc(nmemb, size);
     alsize = nmemb * size;
-    if (size == 0 || nmemb == 0)
+    if (alsize == 0)
         return (NULL);
     if (is_overflowing(nmemb, size, alsize))
         return (NULL);
+    pthread_mutex_lock(&g_mutex);
 	block = dispatch_alloc(alsize);
-    ft_bzero(payload_addr(block), get_b_size(block));
-    debug_return(block);
-	pthread_mutex_unlock(&g_mutex);
-	return (payload_addr(block));
+    ptr = payload_addr(block);
+    if (ptr != NULL)
+        ft_bzero(ptr, get_b_size(block));
+    else
+        errno = ENOMEM;
+    pthread_mutex_unlock(&g_mutex);
+	return (ptr);
 }

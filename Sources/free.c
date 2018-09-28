@@ -43,8 +43,7 @@ static t_block	*unalloc_block(t_block *b)
 	prev = get_b_prev(b);
 	if (is_b_first(b) && (next == NULL || is_b_first(next)))
 		return (remove_room(b, prev, next));
-	if (!getenv("MALLOC_NO_DEFRAG") || ft_strcmp(getenv("MALLOC_NO_DEFRAG"), "y"))
-		b = defrag_prev(defrag_next(b));
+	b = defrag_prev(defrag_next(b));
 	return (b);
 }
 
@@ -60,13 +59,12 @@ void pthsafe_free(void *ptr)
 			unalloc_block(b);
 	}
 	else
-		ft_putstr("Trying to free block that was not allocated\n");
+		ft_putstr("Trying to free block that was not allocated");
 }
 
 void			free(void *ptr)
 {
 	pthread_mutex_lock(&g_mutex);
-	debug_free(ptr);
 	if (ptr)
 		pthsafe_free(ptr);
 	pthread_mutex_unlock(&g_mutex);

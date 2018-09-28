@@ -14,24 +14,6 @@ t_block *attach_block(t_block *ptr, t_block *prev, t_block *next)
     return (ptr);
 }
 
-size_t	count_alloc_blocks(t_block *ptr, size_t size)
-{
-	size_t	c;
-	t_block	*p;
-	size_t	asize;
-
-	c = 0;
-	p = ptr;
-	asize = ALIGN(block_size(size), getpagesize());
-	while (p != NULL && (char *)p < (char *)ptr + asize)
-	{
-		if (is_b_alloc(p))
-			c++;
-		p = get_b_next(p);
-	}
-	return (c);
-}
-
 t_block	*find_block_in_mem(t_block *mem, void *ptr)
 {
 	t_block *b;
@@ -41,8 +23,8 @@ t_block	*find_block_in_mem(t_block *mem, void *ptr)
 	b = mem;
 	while (b != NULL)
 	{
-		if (payload_addr(b) == ptr)
-			return (b);
+        if (payload_addr(b) == ptr)
+        	return (b);
 		b = get_b_next(b);
 	}
 	return (NULL);

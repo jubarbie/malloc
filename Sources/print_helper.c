@@ -36,7 +36,7 @@ void			print_addr(void *ptr)
 	int					i;
 
 	if (ptr == NULL)
-		ft_putstr("0x0");
+		ft_putstr("(null)");
 	else
 	{
 		i = 9;
@@ -73,5 +73,3 @@ void			print_size(size_t size)
 		i++;
 	ft_putstr(&str[i]);
 }
-
-

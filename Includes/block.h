@@ -55,7 +55,8 @@ void 			*payload_addr(t_block *ptr);
 size_t			block_size(size_t size);
 t_block			*split_block(t_block *ptr, size_t size);
 t_block			*fusion_blocks(t_block *block, t_block *next);
-
+char    		is_allocable(t_block *block, size_t size);
+char    		is_splittable(t_block *block, size_t size);
 
 /* Block list */
 t_block			*attach_block(t_block *ptr, t_block *prev, t_block *next);
@@ -65,7 +66,7 @@ t_block			*find_block_in_mem(t_block *mem, void *ptr);
 char			b_cont(t_block *b1, t_block *b2);
 
 /* Malloc */
-void			*dispatch_alloc(size_t size);
+t_block			*dispatch_alloc(size_t size);
 t_block			*new_room(size_t size, t_block *prev, t_block *next);
 
 /* Free */
@@ -90,5 +91,6 @@ void			debug_calloc(size_t nb, size_t size);
 void			debug_malloc(size_t size);
 void			debug_new_room(size_t size);
 void			debug_return(t_block *ptr);
+void 			debug_print(char *str);
 
 #endif
