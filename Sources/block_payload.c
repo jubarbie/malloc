@@ -1,51 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   block_status.c                                     :+:      :+:    :+:   */
+/*   block_payload.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jubarbie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/09/29 12:04:32 by jubarbie          #+#    #+#             */
-/*   Updated: 2018/09/29 12:04:35 by jubarbie         ###   ########.fr       */
+/*   Created: 2018/04/25 11:45:27 by jubarbie          #+#    #+#             */
+/*   Updated: 2018/05/02 19:34:06 by jubarbie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "block.h"
 
-t_block	*set_b_first(t_block *ptr)
+void	*payload_addr(t_block *ptr)
 {
 	if (ptr == NULL)
 		return (NULL);
-	ptr->status |= (1 << 2);
-	return (ptr);
+	return ((void *)(ptr + 1));
 }
 
-t_block	*set_b_alloc(t_block *ptr)
+char	is_splittable(t_block *block, size_t size)
 {
-	if (ptr == NULL)
-		return (NULL);
-	ptr->status |= (1 << 3);
-	return (ptr);
-}
-
-t_block	*set_b_free(t_block *ptr)
-{
-	if (ptr == NULL)
-		return (NULL);
-	ptr->status &= ~(1 << 3);
-	return (ptr);
-}
-
-char	is_b_first(t_block *ptr)
-{
-	if (ptr == NULL)
+	if (block == NULL)
 		return (0);
-	return (ptr->status & (1 << 2));
+	return (get_b_size(block) >= size + block_size(align_16(1)));
 }
 
-char	is_b_alloc(t_block *ptr)
+char	is_fitting(t_block *block, size_t size)
 {
-	if (ptr == NULL)
+	if (block == NULL)
 		return (0);
-	return (ptr->status & (1 << 3));
+	return (get_b_size(block) >= size &&
+			get_b_size(block) < size + block_size(align_16(1)));
 }

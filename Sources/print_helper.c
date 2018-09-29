@@ -30,11 +30,13 @@ static size_t	size_power(size_t n, int power)
 
 void			print_addr(void *ptr)
 {
-	char				addr[] = "0x00000000";
-	char				base[] = "0123456789ABCDEF";
+	char				addr[11];
+	char				base[17];
 	unsigned long int	p;
 	int					i;
 
+	ft_strcpy(addr, "0x00000000");
+	ft_strcpy(base, "0123456789ABCDEF");
 	if (ptr == NULL)
 		ft_putstr("(null)");
 	else
@@ -52,10 +54,11 @@ void			print_addr(void *ptr)
 
 void			print_size(size_t size)
 {
-	char	str[] = "00000000000000000000";
+	char	str[21];
 	int		i;
 	size_t	p;
 
+	ft_strcpy(str, "00000000000000000000");
 	if (size == 0)
 		ft_putstr("0");
 	i = 19;

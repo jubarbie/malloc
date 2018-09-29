@@ -18,6 +18,7 @@ SRC=	Sources/malloc.c		\
 		Sources/block_helper.c	\
 		Sources/block_list.c	\
 		Sources/block_status.c	\
+		Sources/block_payload.c	\
 		Sources/defragment.c	\
 		Sources/hex_dump.c		\
 		Sources/align.c			\
@@ -26,6 +27,7 @@ SRC=	Sources/malloc.c		\
 		Sources/calloc.c		\
 		Sources/show_alloc_mem.c\
 		Sources/print_helper.c	\
+		Sources/options.c		\
 		Sources/debug.c
 OBJ=$(SRC:.c=.o)
 ifeq ($(HOSTTYPE),)

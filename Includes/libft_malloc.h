@@ -33,12 +33,12 @@ typedef struct	s_mem {
 }				t_mem;
 
 extern t_mem			g_mem;
-static pthread_mutex_t	g_mutex;
+static pthread_mutex_t	g_mutex = PTHREAD_MUTEX_INITIALIZER;
 
 extern void		*malloc(size_t size);
 extern void		free(void *ptr);
 extern void		*realloc(void *ptr, size_t size);
-extern void 	*calloc(size_t nmemb, size_t size);
+extern void		*calloc(size_t nmemb, size_t size);
 extern void		show_alloc_mem();
 
 #endif

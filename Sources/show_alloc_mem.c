@@ -22,12 +22,12 @@ static void		print_payload_line(t_block *p)
 		ft_putstr(" : ");
 		print_size(get_b_size(p));
 		ft_putendl(" octets");
-		if (getenv("MALLOC_DETAILS"))
+		if (has_env("MALLOC_DETAILS", "y"))
 			print_hex_dump(p);
 	}
 	else
 	{
-		ft_putstr("PAYLOAD NULL");
+		ft_putstr("(null)");
 	}
 }
 
@@ -38,7 +38,7 @@ static size_t	print_block(t_block *p)
 	s = 0;
 	if (p == NULL)
 		return (0);
-	if (getenv("MALLOC_DETAILS"))
+	if (has_env("MALLOC_DETAILS", "y"))
 	{
 		if (is_b_first(p))
 			ft_putstr(".");
@@ -53,7 +53,7 @@ static size_t	print_block(t_block *p)
 		print_addr(get_b_next(p));
 		ft_putstr("\n\t");
 	}
-	if (is_b_alloc(p) || getenv("MALLOC_DETAILS"))
+	if (is_b_alloc(p) || has_env("MALLOC_DETAILS", "y"))
 		print_payload_line(p);
 	s += (is_b_alloc(p)) ? get_b_size(p) : 0;
 	return (s);
@@ -90,7 +90,6 @@ void			show_alloc_mem(void)
 {
 	size_t	s;
 
-	
 	pthread_mutex_lock(&g_mutex);
 	s = 0;
 	s += print_mem(g_mem.tiny, "TINY");

@@ -14,11 +14,13 @@
 
 static void	print_hex_bit(unsigned char bit)
 {
-	char	str[] = "00";
-	char	base[] = "0123456789ABCDEF";
+	char	str[3];
+	char	base[17];
 	int		i;
 	int		nb;
 
+	ft_strcpy(str, "00");
+	ft_strcpy(base, "0123456789ABCDEF");
 	i = 1;
 	nb = (int)bit;
 	while (bit != 0)
@@ -59,8 +61,7 @@ void		print_hex_dump(t_block *b)
 	{
 		if (i % 16 == 0)
 		{
-			
-			(is_b_alloc(b)) ? ft_putstr("\033[31m") : ft_putstr("\033[32m");
+			(is_b_alloc(b)) ? ft_putstr("\t\033[31m") : ft_putstr("\t\033[32m");
 			print_addr((void *)((char *)ptr + i));
 			ft_putstr("\033[0m");
 			ft_putstr("  ");

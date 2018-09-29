@@ -14,7 +14,7 @@
 
 void	debug_free(void *ptr)
 {
-	if (getenv("MALLOC_DEBUG") && !strcmp("y", getenv("MALLOC_DEBUG")))
+	if (getenv("MALLOC_DEBUG") && !ft_strcmp("y", getenv("MALLOC_DEBUG")))
 	{
 		ft_putstr("free: ");
 		print_addr(ptr);
@@ -24,7 +24,7 @@ void	debug_free(void *ptr)
 
 void	debug_malloc(size_t size)
 {
-	if (getenv("MALLOC_DEBUG") && !strcmp("y", getenv("MALLOC_DEBUG")))
+	if (getenv("MALLOC_DEBUG") && !ft_strcmp("y", getenv("MALLOC_DEBUG")))
 	{
 		ft_putstr("malloc: ");
 		print_size(size);
@@ -34,7 +34,7 @@ void	debug_malloc(size_t size)
 
 void	debug_realloc(void *ptr, size_t size)
 {
-	if (getenv("MALLOC_DEBUG") && !strcmp("y", getenv("MALLOC_DEBUG")))
+	if (getenv("MALLOC_DEBUG") && !ft_strcmp("y", getenv("MALLOC_DEBUG")))
 	{
 		ft_putstr("realloc: ");
 		print_addr(ptr);
@@ -46,7 +46,7 @@ void	debug_realloc(void *ptr, size_t size)
 
 void	debug_calloc(size_t nb, size_t size)
 {
-	if (getenv("MALLOC_DEBUG") && !strcmp("y", getenv("MALLOC_DEBUG")))
+	if (getenv("MALLOC_DEBUG") && !ft_strcmp("y", getenv("MALLOC_DEBUG")))
 	{
 		ft_putstr("calloc: ");
 		print_size(nb);
@@ -57,9 +57,9 @@ void	debug_calloc(size_t nb, size_t size)
 	}
 }
 
-void	debug_return(t_block *ptr)
+void	debug_block(t_block *ptr)
 {
-	if (getenv("MALLOC_DEBUG") && !strcmp("y", getenv("MALLOC_DEBUG")))
+	if (getenv("MALLOC_DEBUG") && !ft_strcmp("y", getenv("MALLOC_DEBUG")))
 	{
 		if (ptr == NULL)
 			ft_putstr("(null)\n");
@@ -80,7 +80,7 @@ void	debug_return(t_block *ptr)
 
 void	debug_new_room(size_t size)
 {
-	if (getenv("MALLOC_DEBUG") && !strcmp("y", getenv("MALLOC_DEBUG")))
+	if (getenv("MALLOC_DEBUG") && !ft_strcmp("y", getenv("MALLOC_DEBUG")))
 	{
 		ft_putstr("\n\tnew room: ");
 		print_size(size);
