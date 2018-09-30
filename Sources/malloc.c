@@ -89,10 +89,8 @@ void			*malloc(size_t size)
 	if (size == 0)
 		return (NULL);
 	pthread_mutex_lock(&g_mutex);
-	debug_malloc(size);
 	block = dispatch_alloc(size);
 	ptr = payload_addr(block);
-	debug_block(block);
 	pthread_mutex_unlock(&g_mutex);
 	if (ptr == NULL)
 		errno = ENOMEM;

@@ -81,7 +81,7 @@ void				*realloc(void *ptr, size_t size)
 	void	*ret;
 
 	pthread_mutex_lock(&g_mutex);
-	debug_realloc(ptr, size);
+	//debug_realloc(ptr, size);
 	if (ptr == NULL)
 		block = dispatch_alloc(size);
 	else if (size == 0)
@@ -92,7 +92,7 @@ void				*realloc(void *ptr, size_t size)
 	else
 		block = dispatch_realloc(ptr, size);
 	ret = payload_addr(block);
-	debug_block(block);
+	//debug_block(block);
 	pthread_mutex_unlock(&g_mutex);
 	if (ret == NULL)
 		errno = ENOMEM;

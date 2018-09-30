@@ -12,7 +12,7 @@
 
 #include "libft_malloc.h"
 
-char	has_env(char *var, char *value)
+char	has_env(const char *var, const char *value)
 {
 	return (getenv(var) && !ft_strcmp(getenv(var), value));
 }

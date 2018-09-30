@@ -66,7 +66,7 @@ void			pthsafe_free(void *ptr)
 
 void			free(void *ptr)
 {
-	debug_free(ptr);
+	//debug_free(ptr);
 	if (ptr != NULL)
 	{
 		pthread_mutex_lock(&g_mutex);

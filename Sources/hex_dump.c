@@ -62,7 +62,7 @@ void		print_hex_dump(t_block *b)
 		if (i % 16 == 0)
 		{
 			(is_b_alloc(b)) ? ft_putstr("\t\033[31m") : ft_putstr("\t\033[32m");
-			print_addr((void *)((char *)ptr + i));
+			print_addr((void *)((char *)ptr + i), 1);
 			ft_putstr("\033[0m");
 			ft_putstr("  ");
 		}

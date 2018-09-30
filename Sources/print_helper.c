@@ -28,7 +28,7 @@ static size_t	size_power(size_t n, int power)
 	return (res);
 }
 
-void			print_addr(void *ptr)
+void			print_addr(void *ptr, int fd)
 {
 	char				addr[11];
 	char				base[17];
@@ -38,7 +38,7 @@ void			print_addr(void *ptr)
 	ft_strcpy(addr, "0x00000000");
 	ft_strcpy(base, "0123456789ABCDEF");
 	if (ptr == NULL)
-		ft_putstr("(null)");
+		ft_putstr_fd("(null)", fd);
 	else
 	{
 		i = 9;
@@ -48,11 +48,11 @@ void			print_addr(void *ptr)
 			addr[i--] = base[p % 16];
 			p /= 16;
 		}
-		ft_putstr(addr);
+		ft_putstr_fd(addr, fd);
 	}
 }
 
-void			print_size(size_t size)
+void			print_size(size_t size, int fd)
 {
 	char	str[21];
 	int		i;
@@ -60,7 +60,7 @@ void			print_size(size_t size)
 
 	ft_strcpy(str, "00000000000000000000");
 	if (size == 0)
-		ft_putstr("0");
+		ft_putstr_fd("0", fd);
 	i = 19;
 	p = size_power(10, i);
 	while (size % p != 0 && i >= 0)
@@ -74,5 +74,5 @@ void			print_size(size_t size)
 	i = 0;
 	while (str[i] == '0')
 		i++;
-	ft_putstr(&str[i]);
+	ft_putstr_fd(&str[i], fd);
 }

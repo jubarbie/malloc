@@ -14,6 +14,7 @@
 # define BLOCK_H
 
 # include <sys/mman.h>
+# include <fcntl.h>
 # include <unistd.h>
 # include <errno.h>
 # include <string.h>
@@ -85,8 +86,8 @@ t_block			*defrag_prev(t_block *b);
 /*
 ** Show allocation memory
 */
-void			print_addr(void *ptr);
-void			print_size(size_t size);
+void			print_addr(void *ptr, int fd);
+void			print_size(size_t size, int fd);
 void			print_hex_dump(t_block *b);
 /*
 ** Align
@@ -96,7 +97,7 @@ size_t			align_page(size_t size);
 /*
 ** Options
 */
-char			has_env(char *var, char *value);
+char			has_env(const char *var, const char *value);
 /*
 ** Debug
 */

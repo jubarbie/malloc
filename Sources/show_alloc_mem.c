@@ -16,11 +16,11 @@ static void		print_payload_line(t_block *p)
 {
 	if (p != NULL)
 	{
-		print_addr(payload_addr(p));
+		print_addr(payload_addr(p), 1);
 		ft_putstr(" - ");
-		print_addr((void *)((char *)payload_addr(p) + get_b_size(p) - 1));
+		print_addr((void *)((char *)payload_addr(p) + get_b_size(p) - 1), 1);
 		ft_putstr(" : ");
-		print_size(get_b_size(p));
+		print_size(get_b_size(p), 1);
 		ft_putendl(" octets");
 		if (has_env("MALLOC_DETAILS", "y"))
 			print_hex_dump(p);
@@ -45,12 +45,12 @@ static size_t	print_block(t_block *p)
 		else
 			ft_putstr(" ");
 		(is_b_alloc(p)) ? ft_putstr("\033[31m") : ft_putstr("\033[32m");
-		print_addr(p);
+		print_addr(p, 1);
 		ft_putstr("\033[0m");
 		ft_putstr("\n\t<- ");
-		print_addr(get_b_prev(p));
+		print_addr(get_b_prev(p), 1);
 		ft_putstr("\n\t-> ");
-		print_addr(get_b_next(p));
+		print_addr(get_b_next(p), 1);
 		ft_putstr("\n\t");
 	}
 	if (is_b_alloc(p) || has_env("MALLOC_DETAILS", "y"))
@@ -62,7 +62,7 @@ static size_t	print_block(t_block *p)
 static void		print_total(size_t nb)
 {
 	ft_putstr("Total : ");
-	print_size(nb);
+	print_size(nb, 1);
 	ft_putendl(" octets\n");
 }
 
@@ -74,7 +74,7 @@ static size_t	print_mem(t_block *ptr, char *name)
 	s = 0;
 	ft_putstr(name);
 	ft_putstr(" : ");
-	print_addr(ptr);
+	print_addr(ptr, 1);
 	ft_putchar('\n');
 	block = ptr;
 	while (block != NULL)
