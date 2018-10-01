@@ -22,7 +22,7 @@ static void		print_payload_line(t_block *p)
 		ft_putstr(" : ");
 		print_size(get_b_size(p), 1);
 		ft_putendl(" octets");
-		if (has_env("MALLOC_DETAILS", "y"))
+		if (is_details())
 			print_hex_dump(p);
 	}
 	else
@@ -38,7 +38,7 @@ static size_t	print_block(t_block *p)
 	s = 0;
 	if (p == NULL)
 		return (0);
-	if (has_env("MALLOC_DETAILS", "y"))
+	if (is_details())
 	{
 		if (is_b_first(p))
 			ft_putstr(".");
@@ -53,7 +53,7 @@ static size_t	print_block(t_block *p)
 		print_addr(get_b_next(p), 1);
 		ft_putstr("\n\t");
 	}
-	if (is_b_alloc(p) || has_env("MALLOC_DETAILS", "y"))
+	if (is_b_alloc(p) || is_details())
 		print_payload_line(p);
 	s += (is_b_alloc(p)) ? get_b_size(p) : 0;
 	return (s);

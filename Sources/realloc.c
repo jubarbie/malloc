@@ -32,21 +32,6 @@ static t_block		*new_alloc(t_block *old, size_t size)
 	return (new);
 }
 
-static t_block		*grow_block(t_block *block, t_block *next, size_t size)
-{
-	t_block	*new;
-	size_t	s;
-
-	if (!b_cont(block, next) || is_b_first(next))
-		return (NULL);
-	s = block_size(get_b_size(next)) + get_b_size(block);
-	set_b_size(block, size);
-	new = init_block((void *)((char *)payload_addr(block) + size));
-	set_b_size(new, s - block_size(size));
-	attach_block(new, block, get_b_next(next));
-	return (block);
-}
-
 static t_block		*dispatch_realloc(void *ptr, size_t size)
 {
 	t_block	*block;
@@ -75,13 +60,12 @@ static t_block		*dispatch_realloc(void *ptr, size_t size)
 	return (grow_block(block, next, alsize));
 }
 
-void				*realloc(void *ptr, size_t size)
+static void			*pthsafe_realloc(void *ptr, size_t size)
 {
 	t_block	*block;
 	void	*ret;
 
-	pthread_mutex_lock(&g_mutex);
-	//debug_realloc(ptr, size);
+	debug_realloc(ptr, size);
 	if (ptr == NULL)
 		block = dispatch_alloc(size);
 	else if (size == 0)
@@ -92,9 +76,18 @@ void				*realloc(void *ptr, size_t size)
 	else
 		block = dispatch_realloc(ptr, size);
 	ret = payload_addr(block);
-	//debug_block(block);
-	pthread_mutex_unlock(&g_mutex);
+	debug_block(block);
 	if (ret == NULL)
 		errno = ENOMEM;
+	return (ret);
+}
+
+void				*realloc(void *ptr, size_t size)
+{
+	void	*ret;
+
+	pthread_mutex_lock(&g_mutex);
+	ret = pthsafe_realloc(ptr, size);
+	pthread_mutex_unlock(&g_mutex);
 	return (ret);
 }

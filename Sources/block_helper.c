@@ -57,3 +57,18 @@ t_block	*fusion_blocks(t_block *block, t_block *next)
 	attach_block(block, get_b_prev(block), get_b_next(next));
 	return (block);
 }
+
+t_block	*grow_block(t_block *block, t_block *next, size_t size)
+{
+	t_block	*new;
+	size_t	s;
+
+	if (!b_cont(block, next) || is_b_first(next))
+		return (NULL);
+	s = block_size(get_b_size(next)) + get_b_size(block);
+	set_b_size(block, size);
+	new = init_block((void *)((char *)payload_addr(block) + size));
+	set_b_size(new, s - block_size(size));
+	attach_block(new, block, get_b_next(next));
+	return (block);
+}

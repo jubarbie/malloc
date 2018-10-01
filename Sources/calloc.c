@@ -19,15 +19,14 @@ static char	is_overflowing(size_t n1, size_t n2, size_t res)
 	return (0);
 }
 
-void		*calloc(size_t nmemb, size_t size)
+static void	*pthsafe_calloc(size_t nmemb, size_t size)
 {
 	t_block	*block;
 	void	*ptr;
 	size_t	alsize;
 
-	//debug_calloc(nmemb, size);
+	debug_calloc(nmemb, size);
 	alsize = nmemb * size;
-	pthread_mutex_lock(&g_mutex);
 	if (alsize == 0)
 		block = dispatch_alloc(1);
 	else if (is_overflowing(nmemb, size, alsize))
@@ -39,7 +38,16 @@ void		*calloc(size_t nmemb, size_t size)
 		ft_bzero(ptr, get_b_size(block));
 	else
 		errno = ENOMEM;
-	//debug_block(block);
+	debug_block(block);
+	return (ptr);
+}
+
+void		*calloc(size_t nmemb, size_t size)
+{
+	void	*ptr;
+
+	pthread_mutex_lock(&g_mutex);
+	ptr = pthsafe_calloc(nmemb, size);
 	pthread_mutex_unlock(&g_mutex);
 	return (ptr);
 }

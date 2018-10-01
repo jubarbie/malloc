@@ -54,10 +54,14 @@ char			is_b_alloc(t_block *ptr);
 ** Block helper
 */
 t_block			*init_block(void *ptr);
-void			*payload_addr(t_block *ptr);
 size_t			block_size(size_t size);
 t_block			*split_block(t_block *ptr, size_t size);
 t_block			*fusion_blocks(t_block *block, t_block *next);
+t_block			*grow_block(t_block *block, t_block *next, size_t size);
+/*
+** Block payload
+*/
+void			*payload_addr(t_block *ptr);
 char			is_splittable(t_block *block, size_t size);
 char			is_fitting(t_block *block, size_t size);
 /*
@@ -69,10 +73,15 @@ t_block			*find_block(void *ptr);
 t_block			*find_block_in_mem(t_block *mem, void *ptr);
 char			b_cont(t_block *b1, t_block *b2);
 /*
+** Room
+*/
+t_block			*new_room(size_t size, t_block *prev, t_block *next);
+t_block			*remove_room(t_block *b, t_block *prev, t_block *next);
+/*
 ** Malloc
 */
 t_block			*dispatch_alloc(size_t size);
-t_block			*new_room(size_t size, t_block *prev, t_block *next);
+void			*pthsafe_malloc(size_t size);
 /*
 ** Free
 */
@@ -98,6 +107,9 @@ size_t			align_page(size_t size);
 ** Options
 */
 char			has_env(const char *var, const char *value);
+char			is_debug();
+char			is_details();
+void			init_options();
 /*
 ** Debug
 */
@@ -105,7 +117,6 @@ void			debug_free(void *ptr);
 void			debug_realloc(void *ptr, size_t size);
 void			debug_calloc(size_t nb, size_t size);
 void			debug_malloc(size_t size);
-void			debug_new_room(size_t size);
 void			debug_block(t_block *ptr);
 void			debug_print(char *str);
 

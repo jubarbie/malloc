@@ -12,24 +12,6 @@
 
 #include "libft_malloc.h"
 
-static t_block	*remove_room(t_block *b, t_block *prev, t_block *next)
-{
-	if (prev == NULL)
-	{
-		if (b == g_mem.tiny)
-			g_mem.tiny = next;
-		if (b == g_mem.small)
-			g_mem.small = next;
-		if (b == g_mem.medium)
-			g_mem.medium = next;
-		set_b_prev(next, NULL);
-	}
-	else
-		attach_block(prev, get_b_prev(prev), next);
-	munmap((void *)b, block_size(get_b_size(b)));
-	return (prev);
-}
-
 static t_block	*unalloc_block(t_block *b)
 {
 	t_block	*next;
@@ -51,26 +33,21 @@ void			pthsafe_free(void *ptr)
 {
 	t_block	*b;
 
+	debug_free(ptr);
 	if (ptr != NULL)
 	{
 		b = (t_block *)ptr;
 		b = find_block(ptr);
 		if (b != NULL)
-		{
 			unalloc_block(b);
-		}
+		else
+			debug_print("Trying to free block that was not allocated\n");
 	}
-	else
-		ft_putstr("Trying to free block that was not allocated");
 }
 
 void			free(void *ptr)
 {
-	//debug_free(ptr);
-	if (ptr != NULL)
-	{
-		pthread_mutex_lock(&g_mutex);
-		pthsafe_free(ptr);
-		pthread_mutex_unlock(&g_mutex);
-	}
+	pthread_mutex_lock(&g_mutex);
+	pthsafe_free(ptr);
+	pthread_mutex_unlock(&g_mutex);
 }

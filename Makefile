@@ -19,6 +19,7 @@ SRC=	Sources/malloc.c		\
 		Sources/block_list.c	\
 		Sources/block_status.c	\
 		Sources/block_payload.c	\
+		Sources/room.c			\
 		Sources/defragment.c	\
 		Sources/hex_dump.c		\
 		Sources/align.c			\
@@ -28,7 +29,8 @@ SRC=	Sources/malloc.c		\
 		Sources/show_alloc_mem.c\
 		Sources/print_helper.c	\
 		Sources/options.c		\
-		Sources/debug.c
+		Sources/debug.c			\
+		Sources/debug2.c
 OBJ=$(SRC:.c=.o)
 ifeq ($(HOSTTYPE),)
 HOSTTYPE := $(shell uname -m)_$(shell uname -s)

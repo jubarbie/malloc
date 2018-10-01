@@ -12,7 +12,7 @@
 
 #include "libft_malloc.h"
 
-t_mem	g_mem = { .tiny = NULL, .small = NULL, .medium = NULL };
+t_mem	g_mem = { .tiny = NULL, .small = NULL, .medium = NULL, .options = 0 };
 
 static t_block	*malloc_in_mem(t_block *mem, size_t mem_size, size_t size)
 {
@@ -51,21 +51,6 @@ static t_block	*init_and_alloc(void **mem, size_t mem_size, size_t size)
 	return (b);
 }
 
-t_block			*new_room(size_t size, t_block *prev, t_block *next)
-{
-	void	*b;
-	size_t	bs;
-
-	bs = align_page(block_size(size));
-	b = mmap(NULL, bs, PROT_READ | PROT_WRITE, MAP_ANON | MAP_PRIVATE, -1, 0);
-	if (b == NULL)
-		return (NULL);
-	b = init_block(b);
-	set_b_all(b, bs - sizeof(t_block), 1, 0);
-	attach_block(b, prev, next);
-	return (b);
-}
-
 t_block			*dispatch_alloc(size_t size)
 {
 	size_t	alsize;
@@ -74,25 +59,37 @@ t_block			*dispatch_alloc(size_t size)
 	if (alsize == 0)
 		return (NULL);
 	if (alsize <= TINY)
-		return (init_and_alloc(&(g_mem.tiny), block_size(TINY) * 50, alsize));
+		return (init_and_alloc(&(g_mem.tiny), block_size(TINY) * 110, alsize));
 	else if (alsize <= SMALL)
-		return (init_and_alloc(&(g_mem.small), block_size(SMALL) * 20, alsize));
+		return (init_and_alloc(&(g_mem.small), block_size(SMALL) * 110,
+																	alsize));
 	else
 		return (init_and_alloc(&(g_mem.medium), alsize, alsize));
 }
 
-void			*malloc(size_t size)
+void			*pthsafe_malloc(size_t size)
 {
 	t_block	*block;
 	void	*ptr;
 
+	init_options();
+	debug_malloc(size);
 	if (size == 0)
 		return (NULL);
-	pthread_mutex_lock(&g_mutex);
 	block = dispatch_alloc(size);
 	ptr = payload_addr(block);
-	pthread_mutex_unlock(&g_mutex);
 	if (ptr == NULL)
 		errno = ENOMEM;
+	debug_block(block);
+	return (ptr);
+}
+
+void			*malloc(size_t size)
+{
+	void	*ptr;
+
+	pthread_mutex_lock(&g_mutex);
+	ptr = pthsafe_malloc(size);
+	pthread_mutex_unlock(&g_mutex);
 	return (ptr);
 }

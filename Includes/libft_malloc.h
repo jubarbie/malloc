@@ -23,13 +23,14 @@
 # include "libft.h"
 # include "block.h"
 
-# define TINY 512
+# define TINY 128
 # define SMALL 2048
 
 typedef struct	s_mem {
 	void	*tiny;
 	void	*small;
 	void	*medium;
+	char	options;
 }				t_mem;
 
 extern t_mem			g_mem;
